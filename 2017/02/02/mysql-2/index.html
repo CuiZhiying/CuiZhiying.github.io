@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Mysql,note," />
 
 
 
@@ -93,16 +93,17 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="创建数据库Mysql&amp;gt; Create Database [If Not Exists] test Charater set [gbk|utf8] 显示创建信息Mysql&amp;gt; Show Create Database test 修改数据库的字符集Mysql&amp;gt; Alter Database test character set = {gbk|utf8} 显示错误信息Mysql&amp;gt;">
+<meta name="keywords" content="Mysql,note">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://cuizhiying.github.io/2017/06/26/hello-world/index.html">
+<meta property="og:title" content="Mysql之创建数据库">
+<meta property="og:url" content="http://cuizhiying.github.io/2017/02/02/mysql-2/index.html">
 <meta property="og:site_name" content="花满楼">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2017-06-26T07:01:11.886Z">
+<meta property="og:description" content="创建数据库Mysql&amp;gt; Create Database [If Not Exists] test Charater set [gbk|utf8] 显示创建信息Mysql&amp;gt; Show Create Database test 修改数据库的字符集Mysql&amp;gt; Alter Database test character set = {gbk|utf8} 显示错误信息Mysql&amp;gt;">
+<meta property="og:updated_time" content="2017-06-26T17:44:46.644Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Mysql之创建数据库">
+<meta name="twitter:description" content="创建数据库Mysql&amp;gt; Create Database [If Not Exists] test Charater set [gbk|utf8] 显示创建信息Mysql&amp;gt; Show Create Database test 修改数据库的字符集Mysql&amp;gt; Alter Database test character set = {gbk|utf8} 显示错误信息Mysql&amp;gt;">
 
 
 
@@ -130,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://cuizhiying.github.io/2017/06/26/hello-world/"/>
+  <link rel="canonical" href="http://cuizhiying.github.io/2017/02/02/mysql-2/"/>
 
 
 
 
 
-  <title>Hello World | 花满楼</title>
+  <title>Mysql之创建数据库 | 花满楼</title>
   
 
 
@@ -177,7 +178,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">美有很多，一如几行优雅而深刻的代码，二如你脸上浅浅的微笑。。。</p>
       
   </div>
 
@@ -255,7 +256,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/06/26/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/02/02/mysql-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="崔志颖(CuiZhiying)">
@@ -272,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">Mysql之创建数据库</h1>
         
 
         <div class="post-meta">
@@ -284,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-26T15:01:11+08:00">
-                2017-06-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-02T12:12:12+08:00">
+                2017-02-02
               </time>
             
 
@@ -319,15 +320,11 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h5 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h5><p><code>Mysql&gt; Create Database [If Not Exists] test Charater set [gbk|utf8]</code></p>
+<h5 id="显示创建信息"><a href="#显示创建信息" class="headerlink" title="显示创建信息"></a>显示创建信息</h5><p><code>Mysql&gt; Show Create Database test</code></p>
+<h5 id="修改数据库的字符集"><a href="#修改数据库的字符集" class="headerlink" title="修改数据库的字符集"></a>修改数据库的字符集</h5><p><code>Mysql&gt; Alter Database test character set = {gbk|utf8}</code></p>
+<h5 id="显示错误信息"><a href="#显示错误信息" class="headerlink" title="显示错误信息"></a>显示错误信息</h5><p><code>Mysql&gt; Show warnings</code></p>
+<h5 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h5><p><code>Mysql&gt; Drop Database If Exists test</code></p>
 
       
     </div>
@@ -355,6 +352,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+            <a href="/tags/note/" rel="tag"># note</a>
+          
+        </div>
+      
 
       
       
@@ -370,8 +375,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/26/github-io-test/" rel="prev" title="github.io/test">
-                github.io/test <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/15/mysql-3/" rel="prev" title="Mysql data type">
+                Mysql data type <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -436,7 +441,7 @@
                alt="崔志颖(CuiZhiying)" />
           <p class="site-author-name" itemprop="name">崔志颖(CuiZhiying)</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-description motion-element" itemprop="description">blog</p>
           
         </div>
         <nav class="site-state motion-element">
@@ -444,14 +449,32 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
           
 
         </nav>
@@ -483,7 +506,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建数据库"><span class="nav-number">1.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示创建信息"><span class="nav-number">2.</span> <span class="nav-text">显示创建信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改数据库的字符集"><span class="nav-number">3.</span> <span class="nav-text">修改数据库的字符集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示错误信息"><span class="nav-number">4.</span> <span class="nav-text">显示错误信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除数据库"><span class="nav-number">5.</span> <span class="nav-text">删除数据库</span></a></li></ol></div>
             
 
           </div>
