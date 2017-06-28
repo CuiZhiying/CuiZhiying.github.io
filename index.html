@@ -43,32 +43,6 @@
 
 
 
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
 
 
 
@@ -86,22 +60,19 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/hashiqi.jpg?v=5.1.1" />
 
 
 
 
 
 
-<meta name="description" content="blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="花满楼">
 <meta property="og:url" content="http://cuizhiying.github.io/index.html">
 <meta property="og:site_name" content="花满楼">
-<meta property="og:description" content="blog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="花满楼">
-<meta name="twitter:description" content="blog">
 
 
 
@@ -141,6 +112,15 @@
 
 
 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'true', 'auto');
+  ga('send', 'pageview');
+</script>
+
 
 
 
@@ -178,7 +158,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">美有很多，一如几行优雅而深刻的代码，二如你脸上浅浅的微笑。。。</p>
+        <p class="site-subtitle">一帘春雨瓢儿菜，满架秋风扁豆花。</p>
       
   </div>
 
@@ -208,12 +188,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
-            归档
+            分类
           </a>
         </li>
       
@@ -224,6 +204,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -256,10 +246,10 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/06/27/mysql-1/">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/06/28/mysql-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="崔志颖(CuiZhiying)">
+      <meta itemprop="name" content="崔志颖">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/hashiqi.jpg">
     </span>
@@ -275,7 +265,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/27/mysql-1/" itemprop="url">Mysql学习笔记之入门杂谈</a></h1>
+                <a class="post-title-link" href="/2017/06/28/mysql-1/" itemprop="url">Mysql学习笔记之入门杂谈</a></h1>
         
 
         <div class="post-meta">
@@ -287,8 +277,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-27T01:42:32+08:00">
-                2017-06-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-28T21:49:59+08:00">
+                2017-06-28
               </time>
             
 
@@ -298,8 +288,40 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/28/mysql-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/06/28/mysql-1/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
             
           
 
@@ -324,118 +346,16 @@
       
         
           
-            <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>正在学习imooc上的<a href="http://www.imooc.com/learn/122" title="慕课网" target="_blank" rel="external">与MySQL的零距离接触</a>，留下一点笔记作为以供回顾<br>在<code>ubuntu 16.04</code>下安装了以下版本的mysql<br><code>mysql  Ver 14.14 Distrib 5.7.16, for Linux (x86_64) using  EditLine wrapper</code>  </p>
-<h3 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -u username -p password</div></pre></td></tr></table></figure>
-<p>例如<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -u root -p</div></pre></td></tr></table></figure></p>
-<p>然后，就会提示输入管理员root的密码的，登陆数据库系统<br>以上是我们最常用的登陆命令，完整的命令列表如下   </p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">参数</th>
-<th style="text-align:left">全称</th>
-<th style="text-align:left">描述  </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left"><code>-D</code></td>
-<td style="text-align:left"><code>--database = name</code></td>
-<td style="text-align:left">打开指定数据库</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left"><code>--delimiter = name</code></td>
-<td style="text-align:left">指定分隔符</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>-h</code></td>
-<td style="text-align:left"><code>--host = name</code></td>
-<td style="text-align:left">服务器名字</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>-p</code></td>
-<td style="text-align:left"><code>--password[=name]</code></td>
-<td style="text-align:left">密码</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>-P</code></td>
-<td style="text-align:left"><code>--port = #(3306为默认端口号)</code></td>
-<td style="text-align:left">端口号</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left"><code>--prompt = name</code></td>
-<td style="text-align:left">设置提示符</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>-u</code></td>
-<td style="text-align:left"><code>--user = name</code></td>
-<td style="text-align:left">用户名</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>-V</code></td>
-<td style="text-align:left"><code>--version</code></td>
-<td style="text-align:left">输出版本信息并且退出         </td>
-</tr>
-</tbody>
-</table>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h4 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a><code>Prompt</code></h4><p>进入到字符交互界面后，修改的提示符为<code>prompt</code>，其后的参数列表如下：</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>\D</code></td>
-<td>完整的日期</td>
-</tr>
-<tr>
-<td><code>\d</code></td>
-<td>当前数据库</td>
-</tr>
-<tr>
-<td><code>\h</code></td>
-<td>服务器名称</td>
-</tr>
-<tr>
-<td><code>\u</code></td>
-<td>当前用户</td>
-</tr>
-</tbody>
-</table>
-<p>例如：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">Mysql&gt;</span> Prompt \u@\h \d&gt; </div><div class="line">root@localhost (none)&gt;</div></pre></td></tr></table></figure></p>
-<h4 id="Select"><a href="#Select" class="headerlink" title="Select"></a><code>Select</code></h4><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>含义 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>SELECT VERSION（）</code></td>
-<td>显示版本号</td>
-</tr>
-<tr>
-<td><code>SELECT NOW（）</code></td>
-<td>显示当前日期时间</td>
-</tr>
-<tr>
-<td><code>SELECT NSER（）</code></td>
-<td>显示当前用户  </td>
-</tr>
-</tbody>
-</table>
-<h3 id="语句规范"><a href="#语句规范" class="headerlink" title="语句规范"></a>语句规范</h3><ul>
-<li>关键字与函数名称全部大写</li>
-<li>数据库名称、表名称、字段名称全部小写</li>
-<li>SQL语句必须以分号结尾</li>
-</ul>
-
-          
+          环境正在学习imooc上的与MySQL的零距离接触，留下一点笔记作为以供回顾在ubuntu 16.04下安装了以下版本的mysqlmysql  Ver 14.14 Distrib 5.7.16, for Linux (x86_64) using  EditLine wrapper  
+登陆1mysq
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/28/mysql-1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -480,7 +400,7 @@
     <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/06/27/hello-2017/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="崔志颖(CuiZhiying)">
+      <meta itemprop="name" content="崔志颖">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/hashiqi.jpg">
     </span>
@@ -519,8 +439,40 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index">
+                    <span itemprop="name">life</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/27/hello-2017/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/06/27/hello-2017/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
             
           
 
@@ -545,16 +497,20 @@
       
         
           
-            <h2 id="在2017年的最开始一个小时"><a href="#在2017年的最开始一个小时" class="headerlink" title="在2017年的最开始一个小时"></a>在2017年的最开始一个小时</h2><p>我们几个人的小群里，代王提出说不如我们每个人都说出自己2017年想完成的目标吧。立博<br>客以记之。</p>
-<ul>
-<li>力争保研<br>虽然想想还是比较有压力的  </li>
-<li>体重增加到120，最好是125吧<br>另一方面也是在督促自己锻炼身体  </li>
-<li>写一本书，一本自己的书<br>这个想法由来已久，写以记之，自勉  </li>
-<li>哦对了，我还想一个人出去玩<br>并非矫情  </li>
-</ul>
-<p>暂时想要达成的就是以上几点了，以后有达成了，再回来在项目背后打上一个小星星。</p>
+          在2017年的最开始一个小时我们几个人的小群里，代王提出说不如我们每个人都说出自己2017年想完成的目标吧。立博客以记之。
 
-          
+力争保研虽然想想还是比较有压力的  
+体重增加到120，最好是125吧另一方面也是在督促自己锻炼身体  
+写一本书，一本自己的书这个想法由来已久，写以记之，自勉  
+哦对了，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/27/hello-2017/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -599,7 +555,7 @@
     <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/06/27/new-site/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="崔志颖(CuiZhiying)">
+      <meta itemprop="name" content="崔志颖">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/hashiqi.jpg">
     </span>
@@ -615,7 +571,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/06/27/new-site/" itemprop="url">new_site</a></h1>
+                <a class="post-title-link" href="/2017/06/27/new-site/" itemprop="url">新的站点Hexo + NexT</a></h1>
         
 
         <div class="post-meta">
@@ -638,8 +594,40 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/this-site/" itemprop="url" rel="index">
+                    <span itemprop="name">this_site</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/27/new-site/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/06/27/new-site/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
             
           
 
@@ -664,8 +652,16 @@
       
         
           
-            
-          
+          前言开了Github很久，一直都在做代码的搬运工，后发现，很多东西自己做了，又忘了，要用的时候，又得重新百度资料。想想，不如在学东西的自己将资料稍微整理一下，既加深了理解，有方便日后的总结。
+Hexo之前使用的用过Jekyll，但是实在觉得有点复杂，hexo是我觉得最简单的一个了，而且有些小清新的主
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/27/new-site/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -710,7 +706,7 @@
     <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/03/15/mysql-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="崔志颖(CuiZhiying)">
+      <meta itemprop="name" content="崔志颖">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/hashiqi.jpg">
     </span>
@@ -749,8 +745,40 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/15/mysql-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/03/15/mysql-3/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
             
           
 
@@ -775,62 +803,60 @@
       
         
           
-            <h5 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h5><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>长度(字节)</th>
-<th>备注   </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TINYINT</td>
-<td>1</td>
-<td>有符号和无符号 </td>
-</tr>
-<tr>
-<td>SMALLINT</td>
-<td>2</td>
-<td>有符号和无符号</td>
-</tr>
-<tr>
-<td>MEDIUMINT</td>
-<td>3</td>
-<td>有符号和无符号</td>
-</tr>
-<tr>
-<td>INT</td>
-<td>4</td>
-<td>有符号和无符号</td>
-</tr>
-<tr>
-<td>BIGINT</td>
-<td>8</td>
-<td>有符号和无符号</td>
-</tr>
-</tbody>
-</table>
-<h5 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h5><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>存贮范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FLOAT[(M, D)]</td>
-<td>M是总的位数，D是小数后的位数，小数后精确到7位</td>
-</tr>
-<tr>
-<td>DOUBLE[(M, D)]</td>
-<td>同上，小数后精确到</td>
-</tr>
-</tbody>
-</table>
-<h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5>
-          
+          整形
+
+
+类型
+长度(字节)
+备注   
+
+
+
+
+TINYINT
+1
+有符号和无符号 
+
+
+SMALLINT
+2
+有符号和无符号
+
+
+MEDIUMINT
+3
+有符号和无符号
+
+
+INT
+4
+有符号和无符号
+
+
+BIGINT
+8
+有符号和无符号
+
+
+
+浮点数
+
+
+类型
+存贮范围
+
+
+
+
+FLOAT[(
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/15/mysql-3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -875,7 +901,7 @@
     <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/02/02/mysql-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="崔志颖(CuiZhiying)">
+      <meta itemprop="name" content="崔志颖">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/hashiqi.jpg">
     </span>
@@ -914,8 +940,40 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/02/mysql-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/02/02/mysql-2/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
             
           
 
@@ -940,13 +998,17 @@
       
         
           
-            <h5 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h5><p><code>Mysql&gt; Create Database [If Not Exists] test Charater set [gbk|utf8]</code></p>
-<h5 id="显示创建信息"><a href="#显示创建信息" class="headerlink" title="显示创建信息"></a>显示创建信息</h5><p><code>Mysql&gt; Show Create Database test</code></p>
-<h5 id="修改数据库的字符集"><a href="#修改数据库的字符集" class="headerlink" title="修改数据库的字符集"></a>修改数据库的字符集</h5><p><code>Mysql&gt; Alter Database test character set = {gbk|utf8}</code></p>
-<h5 id="显示错误信息"><a href="#显示错误信息" class="headerlink" title="显示错误信息"></a>显示错误信息</h5><p><code>Mysql&gt; Show warnings</code></p>
-<h5 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h5><p><code>Mysql&gt; Drop Database If Exists test</code></p>
-
-          
+          创建数据库Mysql&gt; Create Database [If Not Exists] test Charater set [gbk|utf8]
+显示创建信息Mysql&gt; Show Create Database test
+修改数据库的字符集Mysql&gt; Alter Databas
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/02/mysql-2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1013,17 +1075,17 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/hashiqi.jpg"
-               alt="崔志颖(CuiZhiying)" />
-          <p class="site-author-name" itemprop="name">崔志颖(CuiZhiying)</p>
+               alt="崔志颖" />
+          <p class="site-author-name" itemprop="name">崔志颖</p>
            
-              <p class="site-description motion-element" itemprop="description">blog</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           
         </div>
         <nav class="site-state motion-element">
 
           
             <div class="site-state-item site-state-posts">
-              <a href="/archives/">
+              <a href="/">
                 <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -1034,10 +1096,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">1</span>
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
-              
+              </a>
             </div>
           
 
@@ -1045,10 +1107,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
-                <span class="site-state-item-count">7</span>
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -1057,6 +1119,26 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CuiZhiying" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/108841075356564343375" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
           
         </div>
 
@@ -1090,9 +1172,9 @@
   &copy; 
   <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-star"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">崔志颖(CuiZhiying)</span>
+  <span class="author" itemprop="copyrightHolder">崔志颖</span>
 </div>
 
 
