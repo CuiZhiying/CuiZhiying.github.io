@@ -1,0 +1,735 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C-pointer," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/hashiqi.jpg?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="变量的内存模型要了解指针，我们要先来了解一般的变量在内存中是以什么样的形式存在的。也就是这里说要说的变量的内存模型。首先，我们先用C语言来声明一个变量apple，并对它进行初始化。1int apple = 3; 这样一句话在内存中得到的是：&amp;lt; apple : 3 &amp;gt;取apple，就能拿到apple所对应的数值3。但是apple是我们自己定义的，操作系统是怎样识别apple的呢？操作系统">
+<meta name="keywords" content="C-pointer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解C指针的内存模型">
+<meta property="og:url" content="http://cuizhiying.github.io/2017/08/24/deep-understand-of-C-pointer/index.html">
+<meta property="og:site_name" content="花满楼">
+<meta property="og:description" content="变量的内存模型要了解指针，我们要先来了解一般的变量在内存中是以什么样的形式存在的。也就是这里说要说的变量的内存模型。首先，我们先用C语言来声明一个变量apple，并对它进行初始化。1int apple = 3; 这样一句话在内存中得到的是：&amp;lt; apple : 3 &amp;gt;取apple，就能拿到apple所对应的数值3。但是apple是我们自己定义的，操作系统是怎样识别apple的呢？操作系统">
+<meta property="og:updated_time" content="2017-08-25T11:10:39.682Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解C指针的内存模型">
+<meta name="twitter:description" content="变量的内存模型要了解指针，我们要先来了解一般的变量在内存中是以什么样的形式存在的。也就是这里说要说的变量的内存模型。首先，我们先用C语言来声明一个变量apple，并对它进行初始化。1int apple = 3; 这样一句话在内存中得到的是：&amp;lt; apple : 3 &amp;gt;取apple，就能拿到apple所对应的数值3。但是apple是我们自己定义的，操作系统是怎样识别apple的呢？操作系统">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cuizhiying.github.io/2017/08/24/deep-understand-of-C-pointer/"/>
+
+
+
+
+
+  <title>深入理解C指针的内存模型 | 花满楼</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'true', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花满楼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一帘春雨瓢儿菜，满架秋风扁豆花。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/08/24/deep-understand-of-C-pointer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="崔志颖">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hashiqi.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花满楼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解C指针的内存模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T16:23:25+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/24/deep-understand-of-C-pointer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/08/24/deep-understand-of-C-pointer/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="变量的内存模型"><a href="#变量的内存模型" class="headerlink" title="变量的内存模型"></a>变量的内存模型</h4><p>要了解指针，我们要先来了解一般的变量在内存中是以什么样的形式存在的。也就是这里说要说的变量的内存模型。<br>首先，我们先用C语言来声明一个变量apple，并对它进行初始化。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> apple = <span class="number">3</span>;</div></pre></td></tr></table></figure></p>
+<p>这样一句话在内存中得到的是：<br><code>&lt; apple : 3 &gt;</code><br>取apple，就能拿到apple所对应的数值3。但是apple是我们自己定义的，操作系统是怎样识别apple的呢？操作系统在每一块内存空间中都使用了唯一的数字来作为那一块内存空间的标识符，也就是我们操作系统书里面常说的内存地址。这是操作系统在对我们的内存空间进行管理，所以，每一个变量的内存空间自然是由操作系统来指定的，我们程序员一般不会去指定变量存放的内存空间，我们一般只是声明了变量的名称，也就上面的apple，我们引用变量就用变量的名称，而操作系统则是通过存放变量的内存的地址来引用变量。我们所说的指针，其实就是指的是内存的地址。<br>上面apple的内存地址对于我们来说并不重要，为了方便表述，我们不妨认为它存在的地址就是1001，所以，我们可以得到：<br><code>&lt; apple(1001) : 3 &gt;</code><br>我们对其进行稍微抽象一下就可以得到变量的内存模型如下所示：<br><code>&lt; Tag(address) | Value &gt;</code><br>所以，多个变量组成的栈就是</p>
+<p><code>&lt; Tag1(address    ) | Value1 &gt;</code><br><code>&lt; Tag2(address + 1) | Value2 &gt;</code><br><code>&lt; Tag3(address + 2) | Value3 &gt;</code><br><code>&lt; Tag4(address + 3) | Value4 &gt;</code><br><code>&lt; Tag5(address + 4) | Value5 &gt;</code><br><code>&lt; Tag6(address + 5) | Value6 &gt;</code><br><code>&lt; Tag7(address + 6) | Value7 &gt;</code><br><code>&lt; Tag8(address + 7) | Value8 &gt;</code></p>
+<h4 id="常用的操作-amp-和"><a href="#常用的操作-amp-和" class="headerlink" title="常用的操作&amp;和*"></a>常用的操作<code>&amp;</code>和<code>*</code></h4><p>通过apple变量来说明一些常用的操作。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apple  ==&gt; <span class="number">3</span></div><div class="line">&amp;apple ==&gt; <span class="number">1001</span></div></pre></td></tr></table></figure></p>
+<p>直接使用apple就是取到了该内存空间存放的数值3，<code>&amp;</code>是取地址操作，就是获取到了该变量apple所在的内存块的内存地址，也就是1001。那<code>*</code>操作呢？<br>我们要先有指针型变量再有<code>*</code>操作。所以，我们再加入一个bag变量，来装apple :)<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> apple = <span class="number">3</span>；</div><div class="line"><span class="keyword">int</span> *bag;</div><div class="line">bag = &amp;apple;</div></pre></td></tr></table></figure></p>
+<p>首先，<code>int *bag</code>中的<code>*</code>,仅仅是声明bag变量是一个指针型变量，并不具有任何计算和操作的含义。指针型变量应该要用一个内存地址来进行初始化。所以，如果我们要对bag进行声明并初始化的话，应该写成<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> apple = <span class="number">3</span>；</div><div class="line"><span class="keyword">int</span> *bag  = &amp;apple;</div></pre></td></tr></table></figure></p>
+<p>而不是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> apple = <span class="number">3</span>；</div><div class="line"><span class="keyword">int</span> *bag  = apple;</div></pre></td></tr></table></figure></p>
+<p>特此提出，因为，我自己也常会犯这种错误。<br>这时，内存中两个变量如下：<br><code>&lt; apple(1001) : 3    &gt;</code><br><code>&lt; bag  (1002) : 1001 &gt;</code><br>这时候，我们可以进行的操作多了一个<code>*</code>操作（注意，再啰嗦一次，这里<code>*</code>表示的是操作，而<code>int *bag</code>中的<code>*</code>是标志符，表示bag是指针型变量），是单目运算符，该操作的具体就是取出操作对象中存放的地址所指向的内存空间的数值，是的，有点绕口，教科书称之为间接取值，我们可以跳过这个文字说明，直接看操作结果。<br>常见的操作的结果为：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">apple  ==&gt; <span class="number">3</span></div><div class="line">bag    ==&gt; <span class="number">1001</span></div><div class="line"></div><div class="line">&amp;apple ==&gt; <span class="number">1001</span></div><div class="line">&amp;bag   ==&gt; <span class="number">1002</span></div><div class="line"></div><div class="line">*bag   ==&gt; *(<span class="number">1001</span>) ==&gt; <span class="number">3</span></div></pre></td></tr></table></figure></p>
+<p><code>*bag</code>就是取出bag中所保存的内存地址所指向的内存空间，也就是1001，所保存的数值，也就是3。</p>
+<h4 id="指针的指针，地址的地址"><a href="#指针的指针，地址的地址" class="headerlink" title="指针的指针，地址的地址"></a>指针的指针，地址的地址</h4><p>我们接下来再考虑一下一个更加复杂一点点的情况，来加深对指针的认识，这就是指针的指针。我们在上面的代码中加入一个新的变量car。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> apple = <span class="number">3</span>;</div><div class="line"><span class="keyword">int</span> *bag  = &amp;apple;</div><div class="line"><span class="keyword">int</span> **car = &amp;bag;</div></pre></td></tr></table></figure></p>
+<p>同样，<code>*</code>号在这里不表示任何操作，只是用<code>**</code>来表明这是指针的指针，同时，接下来也没有<code>int ***</code>这些数据类型了（笑），我们只需要使用指针的指针不断地嵌套，就可以有无数层的引用了。<br>上述代码的在内存中的表示情况又是怎么样的呢？<br><code>&lt; apple(1001)  : 3    &gt;</code><br><code>&lt; bag  (1002)  : 1001 &gt;</code><br><code>&lt; car  (1003)  : 1002 &gt;</code><br>对上面三个变量的一些操作结果如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">apple  ==&gt;  <span class="number">3</span>   ;</div><div class="line">bag    ==&gt;  <span class="number">1001</span>;</div><div class="line">car    ==&gt;  <span class="number">1002</span>;</div><div class="line"></div><div class="line">&amp;apple ==&gt; <span class="number">1001</span>;</div><div class="line">&amp;bag   ==&gt; <span class="number">1002</span>;</div><div class="line">&amp;car   ==&gt; <span class="number">1003</span>;</div><div class="line"></div><div class="line">*bag   ==&gt; <span class="number">3</span>;</div><div class="line">*car   ==&gt; <span class="number">1001</span>;</div><div class="line">**car  ==&gt; *(*car) ==&gt; *<span class="number">1001</span> ( ==&gt; *bag ) ==&gt; <span class="number">3</span></div></pre></td></tr></table></figure></p>
+<h4 id="指针的指针典型的例子"><a href="#指针的指针典型的例子" class="headerlink" title="指针的指针典型的例子"></a>指针的指针典型的例子</h4><p>我们已经定义了一个int型指针，然后想要将其动态分配内存获得一个动态生成的数组，我们写的代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_array</span><span class="params">( <span class="keyword">int</span> *<span class="built_in">array</span>, <span class="keyword">int</span> length, <span class="keyword">int</span> init_value )</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="built_in">array</span> = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>( length * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; length; i++ )</div><div class="line">        <span class="built_in">array</span>[i] = init_value;</div><div class="line">    <span class="comment">// 随便打印一个数字，看看在函数中内否调用到该数字</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, <span class="built_in">array</span>[<span class="number">5</span>]); </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> *eggs;</div><div class="line">    get_array( eggs, <span class="number">10</span>, <span class="number">1</span>);</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ )</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, eggs[<span class="number">1</span>]);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的程序看起来是没有问题的，编译的时候也能够通过，但是在执行的时候，就会报出<code>Segmentation fault (core dumped)</code>的错误。原因何在？因为在上面的程序中，首先声明了一个int型的指针变量eggs，然后就赋值给了get_array函数中array（同样也是int指针型变量）,但是在函数中array马上就又被malloc函数返回的内存地址重新赋值了，所以，事实上，malloc分配的内存地址并没有传递到我们所期待的eggs变量中。<br>想要解决这个问题就要用到指针的指针了，代码修改如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_array</span><span class="params">( <span class="keyword">int</span> **<span class="built_in">array</span>, <span class="keyword">int</span> length, <span class="keyword">int</span> init_value )</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    *<span class="built_in">array</span> = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>( length * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; length; i++ )</div><div class="line">        (*<span class="built_in">array</span>)[i] = init_value;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="keyword">int</span> *eggs;</div><div class="line">    get_array( &amp;eggs, <span class="number">10</span>, <span class="number">1</span>);</div><div class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ )</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, eggs[i]);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>与上面不同的地方是，我们在get_array函数中声明的是一个指针的指针函数，传参的时候也做出了相应的改变。<br>为什么第二个程序就可以达到理想的效果呢？我们不妨来对第二个程序的进行一下分析。</p>
+<p>程序准备就绪，但是还没有开始执行的时候：<br><code>&lt; eggs  (1001) : null &gt;</code><br><code>&lt; array (1002) : null &gt;</code><br><code>&lt; malloc(1004) : null &gt;</code><br>eggs传参数进去之后，<code>malloc</code>函数执行之前：<br><code>&lt; eggs (1001) : null &gt;</code><br><code>&lt; array(1002) : 1001 &gt;</code><br><code>&lt; malloc(1004): null &gt;</code><br><code>malloc</code>函数执行之后（假设malloc返回的内存地址位1003）：<br><code>&lt; eggs (1001) : 1003 &gt;</code><br><code>&lt; array(1002) : 1001 &gt;</code><br><code>&lt; malloc(1004): 1003 &gt;</code><br>这一步是关键。<code>&lt; malloc(1004) : 1003 &gt;</code>这一块应该没有问题，因为我们已经假设<code>malloc</code>函数返回的内存地址就是1003了。问题是<code>&lt;egg (1001) : 1003 &gt;</code><br>我们先来看那一行代码：</p>
+<pre><code class="C">*<span class="built_in">array</span> = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>( length * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) );
+</code></pre>
+<p>我们可以得到<br><code>*array ==&gt; *(1001) ==&gt; egg = malloc ==&gt; 1003</code><br>在这一行之前，egg原来是null，然后接收了malloc函数的返回值，指向了一块新的内存空间，内存地址加一，指向下一块空间，这样子可以用作一个一维数组了。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>C语言函数要想修改主程序中传入的参数的话，想要修改int型数据，就设置参数为int<em>型，想要修改int</em>型参数，就设置参数位int**型。其他各种数据类型同理。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C-pointer/" rel="tag"># C-pointer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/23/C-point-initial/" rel="next" title="C指针初始化踩坑">
+                <i class="fa fa-chevron-left"></i> C指针初始化踩坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hashiqi.jpg"
+               alt="崔志颖" />
+          <p class="site-author-name" itemprop="name">崔志颖</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CuiZhiying" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/108841075356564343375" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量的内存模型"><span class="nav-number">1.</span> <span class="nav-text">变量的内存模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的操作-amp-和"><span class="nav-number">2.</span> <span class="nav-text">常用的操作&和*</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针的指针，地址的地址"><span class="nav-number">3.</span> <span class="nav-text">指针的指针，地址的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针的指针典型的例子"><span class="nav-number">4.</span> <span class="nav-text">指针的指针典型的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">崔志颖</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
