@@ -51,7 +51,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="linux," />
+  <meta name="keywords" content="C-pointer," />
 
 
 
@@ -67,17 +67,17 @@
 
 
 
-<meta name="description" content="引言之前使用vim，总是遇到啥问题就百度，用了就忘。方觉仍是需要自己总结一下，方能记得牢靠些。    个人笔记，仅供参考！    优雅地进入–INSERT–模式 Ctrl + A 将光标移动到行末尾后进入插入模式 Ctrl + o 在该行的的下面另起一行，插入内容 Ctrl + S 删除改行的所有内容，进入插入模式，重新编辑改行 Ctrl + s 删除光标所在的字符，进入插入模式  不全，仅仅是记">
-<meta name="keywords" content="linux">
+<meta name="description" content="正确演示12345int *p;int a = 25p = &amp;amp;a;*p = 20;p = &quot;abcdefg&quot; 这里是指针先声明，后初始化。对p进行初始化时，要赋地址值，对*p进行初始化的时候要赋声明的数据类型，其中，*表示的是间接取值的意思。 或者在声明的同时初始化。123456int a = 25;int b[10] = &amp;#123;0&amp;#125;;int *p = &amp;amp;a;int">
+<meta name="keywords" content="C-pointer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vim 快捷键之复制粘贴">
-<meta property="og:url" content="http://cuizhiying.github.io/2017/08/16/Vim1/index.html">
+<meta property="og:title" content="C指针初始化">
+<meta property="og:url" content="http://cuizhiying.github.io/2017/08/23/C-point-initial/index.html">
 <meta property="og:site_name" content="花满楼">
-<meta property="og:description" content="引言之前使用vim，总是遇到啥问题就百度，用了就忘。方觉仍是需要自己总结一下，方能记得牢靠些。    个人笔记，仅供参考！    优雅地进入–INSERT–模式 Ctrl + A 将光标移动到行末尾后进入插入模式 Ctrl + o 在该行的的下面另起一行，插入内容 Ctrl + S 删除改行的所有内容，进入插入模式，重新编辑改行 Ctrl + s 删除光标所在的字符，进入插入模式  不全，仅仅是记">
-<meta property="og:updated_time" content="2017-08-16T17:00:44.695Z">
+<meta property="og:description" content="正确演示12345int *p;int a = 25p = &amp;amp;a;*p = 20;p = &quot;abcdefg&quot; 这里是指针先声明，后初始化。对p进行初始化时，要赋地址值，对*p进行初始化的时候要赋声明的数据类型，其中，*表示的是间接取值的意思。 或者在声明的同时初始化。123456int a = 25;int b[10] = &amp;#123;0&amp;#125;;int *p = &amp;amp;a;int">
+<meta property="og:updated_time" content="2017-08-23T07:22:39.436Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vim 快捷键之复制粘贴">
-<meta name="twitter:description" content="引言之前使用vim，总是遇到啥问题就百度，用了就忘。方觉仍是需要自己总结一下，方能记得牢靠些。    个人笔记，仅供参考！    优雅地进入–INSERT–模式 Ctrl + A 将光标移动到行末尾后进入插入模式 Ctrl + o 在该行的的下面另起一行，插入内容 Ctrl + S 删除改行的所有内容，进入插入模式，重新编辑改行 Ctrl + s 删除光标所在的字符，进入插入模式  不全，仅仅是记">
+<meta name="twitter:title" content="C指针初始化">
+<meta name="twitter:description" content="正确演示12345int *p;int a = 25p = &amp;amp;a;*p = 20;p = &quot;abcdefg&quot; 这里是指针先声明，后初始化。对p进行初始化时，要赋地址值，对*p进行初始化的时候要赋声明的数据类型，其中，*表示的是间接取值的意思。 或者在声明的同时初始化。123456int a = 25;int b[10] = &amp;#123;0&amp;#125;;int *p = &amp;amp;a;int">
 
 
 
@@ -105,13 +105,13 @@
 
 
 
-  <link rel="canonical" href="http://cuizhiying.github.io/2017/08/16/Vim1/"/>
+  <link rel="canonical" href="http://cuizhiying.github.io/2017/08/23/C-point-initial/"/>
 
 
 
 
 
-  <title>Vim 快捷键之复制粘贴 | 花满楼</title>
+  <title>C指针初始化 | 花满楼</title>
   
 
 
@@ -249,7 +249,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/08/16/Vim1/">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/08/23/C-point-initial/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="崔志颖">
@@ -266,7 +266,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Vim 快捷键之复制粘贴</h1>
+          <h1 class="post-title" itemprop="name headline">C指针初始化</h1>
         
 
         <div class="post-meta">
@@ -278,8 +278,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T23:45:51+08:00">
-                2017-08-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T14:40:31+08:00">
+                2017-08-23
               </time>
             
 
@@ -289,28 +289,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vim/" itemprop="url" rel="index">
-                    <span itemprop="name">vim</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -319,8 +297,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/08/16/Vim1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/08/16/Vim1/" itemprop="commentCount">0</span> comments
+                <a href="/2017/08/23/C-point-initial/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/08/23/C-point-initial/" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -345,37 +323,15 @@
       
 
       
-        <h4 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h4><p>之前使用vim，总是遇到啥问题就百度，用了就忘。方觉仍是需要自己总结一下，方能记得牢靠些。   </p>
-<p>个人笔记，仅供参考！   </p>
-<h4 id="优雅地进入–INSERT–模式"><a href="#优雅地进入–INSERT–模式" class="headerlink" title="优雅地进入–INSERT–模式"></a>优雅地进入–INSERT–模式</h4><ul>
-<li><code>Ctrl + A</code> 将光标移动到行末尾后进入插入模式</li>
-<li><code>Ctrl + o</code> 在该行的的下面另起一行，插入内容</li>
-<li><code>Ctrl + S</code> 删除改行的所有内容，进入插入模式，重新编辑改行</li>
-<li><code>Ctrl + s</code> 删除光标所在的字符，进入插入模式</li>
-</ul>
-<p>不全，仅仅是记录了自己认为最有用的</p>
-<h4 id="normal模式下常用的操作"><a href="#normal模式下常用的操作" class="headerlink" title="normal模式下常用的操作"></a>normal模式下常用的操作</h4><h5 id="移动光标的快速操作"><a href="#移动光标的快速操作" class="headerlink" title="移动光标的快速操作"></a>移动光标的快速操作</h5><ul>
-<li><code>h</code> <code>j</code> <code>k</code> <code>l</code>左下上右移动光标</li>
-<li><code>w</code> 移动到下一个单词word的第一个字符</li>
-<li><code>b</code> 移动到上一个单词的第一个字符begin</li>
-<li><code>e</code> 移动到下一个单词的末尾</li>
-<li><code>gg</code> 移动到文本的一个字符</li>
-<li><code>G</code> 移动到文本的最后一个字符</li>
-</ul>
-<h5 id="删除的常用操作（默认将删除的内容复制到缓冲区中）-大致可以分成以下三种"><a href="#删除的常用操作（默认将删除的内容复制到缓冲区中）-大致可以分成以下三种" class="headerlink" title="删除的常用操作（默认将删除的内容复制到缓冲区中）,大致可以分成以下三种"></a>删除的常用操作（默认将删除的内容复制到缓冲区中）,大致可以分成以下三种</h5><ul>
-<li><code>x</code> 删除光标所在的字符</li>
-<li><code>dd</code> 删除行</li>
-<li><code>d</code> + <code>光标移动命令</code> 删除的是目前光标所在的位置到移动光标的位置之后的光标位置所包括的所有光标内容<br>-<em> <code>d</code> + <code>w</code> 删除从光标所在位置的到下一个单词开头的所有内容<br>-</em> <code>d</code> + <code>gg</code> 删除从光标所在位置到文本开头的全部内容 </li>
-</ul>
-<h5 id="数字-操作"><a href="#数字-操作" class="headerlink" title="数字+操作"></a><code>数字</code>+<code>操作</code></h5><p>表示将操作重复N次，比如</p>
-<ul>
-<li><code>5dd</code> 删除下面5行内容</li>
-<li><code>5w</code> 将光标移动到后面第五个单词的开头</li>
-</ul>
-<h5 id="吃后悔药与后悔吃后悔药"><a href="#吃后悔药与后悔吃后悔药" class="headerlink" title="吃后悔药与后悔吃后悔药"></a>吃后悔药与后悔吃后悔药</h5><ul>
-<li><code>u</code> 撤销操作</li>
-<li><code>Ctrl + r</code> 撤销上一次撤销的动作</li>
-</ul>
+        <h4 id="正确演示"><a href="#正确演示" class="headerlink" title="正确演示"></a>正确演示</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *p;</div><div class="line"><span class="keyword">int</span> a = <span class="number">25</span></div><div class="line">p = &amp;a;</div><div class="line">*p = <span class="number">20</span>;</div><div class="line">p = <span class="string">"abcdefg"</span></div></pre></td></tr></table></figure>
+<p>这里是指针先声明，后初始化。对<code>p</code>进行初始化时，要赋地址值，对<code>*p</code>进行初始化的时候要赋声明的数据类型，其中，<code>*</code>表示的是间接取值的意思。</p>
+<p>或者在声明的同时初始化。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">25</span>;</div><div class="line"><span class="keyword">int</span> b[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</div><div class="line"></div><div class="line"><span class="keyword">int</span> *p = &amp;a;</div><div class="line"><span class="keyword">int</span> *p = b;</div><div class="line"><span class="keyword">int</span> *p = &amp;b[<span class="number">0</span>];</div></pre></td></tr></table></figure></p>
+<p>此时，<code>=</code>号右边的操作数必须为内存地址，<code>*p</code>只是表示这是一个指针变量，并没有间接取值的意思。   </p>
+<h4 id="错误演示"><a href="#错误演示" class="headerlink" title="错误演示"></a>错误演示</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">25</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> *apple = <span class="number">25</span>;</div><div class="line"><span class="keyword">int</span> *<span class="built_in">set</span> = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&#125;;</div><div class="line"><span class="keyword">int</span> *number = a;</div></pre></td></tr></table></figure>
+<p>以上三种方法是错误的，我又犯了几次, 原因同上，<code>*</code>在这里只是声明该变量是一个指针，并没有间接取值的意思。</p>
+<h4 id="终极错误"><a href="#终极错误" class="headerlink" title="终极错误"></a>终极错误</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *a;</div><div class="line">*a = <span class="number">1</span>;</div></pre></td></tr></table></figure>
+<p>好吧，这是一个能反应C指针本质的错误。这种写法，编译没有报错，运行时会出现内存错误。<br>上面第一行只声明了一个指针变量，里面保存的是一个（32位）的内存地址，但是第二行并没有声明该指针变量保存的是哪一块内存的地址，就直接间接取值符号<code>*</code>来进行初始化了，这样子会让那个数字<code>1</code>无处安放，因为指针变量a还没有指向一块内存。<br>如果还没哟理解的话，可以看看下面的修改：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> *a;</div><div class="line"><span class="keyword">int</span> b;</div><div class="line">a = &amp;b;</div><div class="line">*a = <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
+<p>上面的代码声明了多一块内存空间<code>b</code>，<code>*a</code>指的是将数据<code>1</code>保存在<code>b</code>所声明的内存空间中。</p>
 
       
     </div>
@@ -405,7 +361,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/C-pointer/" rel="tag"># C-pointer</a>
           
         </div>
       
@@ -418,8 +374,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/08/linear-s-heart/" rel="next" title="线性代数的本质">
-                <i class="fa fa-chevron-left"></i> 线性代数的本质
+              <a href="/2017/08/16/Vim1/" rel="next" title="Vim 快捷键之复制粘贴">
+                <i class="fa fa-chevron-left"></i> Vim 快捷键之复制粘贴
               </a>
             
           </div>
@@ -427,10 +383,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/23/C-point-initial/" rel="prev" title="C指针初始化">
-                C指针初始化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -579,7 +531,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地进入–INSERT–模式"><span class="nav-number">2.</span> <span class="nav-text">优雅地进入–INSERT–模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#normal模式下常用的操作"><span class="nav-number">3.</span> <span class="nav-text">normal模式下常用的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#移动光标的快速操作"><span class="nav-number">3.1.</span> <span class="nav-text">移动光标的快速操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除的常用操作（默认将删除的内容复制到缓冲区中）-大致可以分成以下三种"><span class="nav-number">3.2.</span> <span class="nav-text">删除的常用操作（默认将删除的内容复制到缓冲区中）,大致可以分成以下三种</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数字-操作"><span class="nav-number">3.3.</span> <span class="nav-text">数字+操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#吃后悔药与后悔吃后悔药"><span class="nav-number">3.4.</span> <span class="nav-text">吃后悔药与后悔吃后悔药</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#正确演示"><span class="nav-number">1.</span> <span class="nav-text">正确演示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误演示"><span class="nav-number">2.</span> <span class="nav-text">错误演示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#终极错误"><span class="nav-number">3.</span> <span class="nav-text">终极错误</span></a></li></ol></div>
             
 
           </div>
