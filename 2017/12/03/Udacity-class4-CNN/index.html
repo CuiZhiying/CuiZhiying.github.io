@@ -1,0 +1,768 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CNN," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/hashiqi.jpg?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="引言Udacity上的深度学习课程学习到了第四大节,卷积神经网络.这一部分使用到的数据与前面几节是一样的,都是notMINST的数据,而且就是第一章数据预处理后得到的相对干净的可以直接拿来用的数据. 这一章当中,老师讲到我们做图像处理的时候选择使用绝大多数时候都是使用卷积神经网络,而不是普通的全连接的神经网络,因为我们已经明确我们的数据类型就是数字图像,所以我们要充分使用到这些图像的特征.我想这种">
+<meta name="keywords" content="CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN in tensorflow">
+<meta property="og:url" content="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/index.html">
+<meta property="og:site_name" content="花满楼">
+<meta property="og:description" content="引言Udacity上的深度学习课程学习到了第四大节,卷积神经网络.这一部分使用到的数据与前面几节是一样的,都是notMINST的数据,而且就是第一章数据预处理后得到的相对干净的可以直接拿来用的数据. 这一章当中,老师讲到我们做图像处理的时候选择使用绝大多数时候都是使用卷积神经网络,而不是普通的全连接的神经网络,因为我们已经明确我们的数据类型就是数字图像,所以我们要充分使用到这些图像的特征.我想这种">
+<meta property="og:image" content="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/LeNet5.png">
+<meta property="og:image" content="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/asamples.gif">
+<meta property="og:updated_time" content="2017-12-03T18:17:17.351Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CNN in tensorflow">
+<meta name="twitter:description" content="引言Udacity上的深度学习课程学习到了第四大节,卷积神经网络.这一部分使用到的数据与前面几节是一样的,都是notMINST的数据,而且就是第一章数据预处理后得到的相对干净的可以直接拿来用的数据. 这一章当中,老师讲到我们做图像处理的时候选择使用绝大多数时候都是使用卷积神经网络,而不是普通的全连接的神经网络,因为我们已经明确我们的数据类型就是数字图像,所以我们要充分使用到这些图像的特征.我想这种">
+<meta name="twitter:image" content="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/LeNet5.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/"/>
+
+
+
+
+
+  <title>CNN in tensorflow | 花满楼</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'true', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花满楼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一帘春雨瓢儿菜，满架秋风扁豆花。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="崔志颖">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hashiqi.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花满楼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CNN in tensorflow</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T21:30:41+08:00">
+                2017-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Udacity/" itemprop="url" rel="index">
+                    <span itemprop="name">Udacity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/03/Udacity-class4-CNN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/12/03/Udacity-class4-CNN/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h4><p>Udacity上的<a href="https://classroom.udacity.com/courses/ud730/lessons/6377263405/concepts/66010388990923" target="_blank" rel="external">深度学习课程</a>学习到了第四大节,卷积神经网络.这一部分使用到的数据与前面几节是一样的,都是notMINST的数据,而且就是第一章数据预处理后得到的相对干净的可以直接拿来用的数据.</p>
+<p>这一章当中,老师讲到我们做图像处理的时候选择使用绝大多数时候都是使用卷积神经网络,而不是普通的全连接的神经网络,因为我们已经明确我们的数据类型就是数字图像,所以我们要充分使用到这些图像的特征.我想这种充分利用数据特征的思想,在我们的学习和探索的过程当中非常具有指导意义.</p>
+<p>闲话不说,放码过来吧!</p>
+<h4 id="数据集的提取"><a href="#数据集的提取" class="headerlink" title="数据集的提取"></a>数据集的提取</h4><p>首先添加头文件,事实上这一块的代码应该是在后面需要用到的过程中再作添加的,但是为了保证该blog的代码可以重新复制粘贴之后可以使用,所以我就全部添加进来了.阅读时可先跳过这一段<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> cPickle <span class="keyword">as</span> pickle</div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> range</div></pre></td></tr></table></figure></p>
+<p>然后就是使用Python中的<code>pickle()</code>函数恢复数据集对象,文件路径自行替换.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">pickle_file = <span class="string">"../udacity-class3/notMNIST.pickle"</span></div><div class="line"></div><div class="line"><span class="keyword">with</span> open( pickle_file,<span class="string">"rb"</span> ) <span class="keyword">as</span> f:</div><div class="line">    save = pickle.load(f)</div><div class="line">    train_dataset = save[<span class="string">"train_dataset"</span>]</div><div class="line">    train_labels  = save[<span class="string">"train_labels"</span>]</div><div class="line">    valid_dataset = save[<span class="string">"valid_dataset"</span>]</div><div class="line">    valid_labels  = save[<span class="string">"valid_labels"</span>]</div><div class="line">    test_dataset  = save[<span class="string">"test_dataset"</span>]</div><div class="line">    test_labels   = save[<span class="string">"test_labels"</span>]</div><div class="line">    <span class="keyword">del</span> save</div><div class="line">    print(<span class="string">"Training set   :"</span>, train_dataset.shape, train_labels.shape)</div><div class="line">    print(<span class="string">"Validation set :"</span>, valid_dataset.shape, valid_labels.shape)</div><div class="line">    print(<span class="string">"Test set       :"</span>, test_dataset.shape,  test_labels.shape)</div></pre></td></tr></table></figure></p>
+<p>到此,代码的运行结果如下(可以看到和计算数据集维度):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Training set   : (200000, 28, 28) (200000,)</div><div class="line">Validation set : (10000, 28, 28) (10000,)</div><div class="line">Test set       : (10000, 28, 28) (10000,)</div></pre></td></tr></table></figure></p>
+<p>上面得到的仅仅是我们的原始数据集,还不是十分符合tensorflow中<code>tf.nn.conv2d</code>中数据格式(符合要求的数据集形式应该是 [卷积核的高度，卷积核的宽度，图像通道数，卷积核个数],详情见下文解释),所以对数据进行进一步的格式化处理.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">image_size   = <span class="number">28</span></div><div class="line">num_labels   = <span class="number">10</span></div><div class="line">num_channels = <span class="number">1</span>  <span class="comment"># grayscale</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reformat</span><span class="params">( dataset, labels)</span>:</span></div><div class="line">    <span class="comment"># 将数据增加了一个维度,也就是增加了第四维channel,值为1</span></div><div class="line">    dataset = dataset.reshape((<span class="number">-1</span>, image_size, image_size, num_channels)).astype(np.float32)</div><div class="line">    <span class="comment"># 将便签扩展,便签所在位为1,其余为0,参见第三节内容</span></div><div class="line">    labels  = (np.arange(num_labels) == labels[:, <span class="keyword">None</span>]).astype(np.float32)</div><div class="line">    <span class="keyword">return</span> dataset, labels</div><div class="line"></div><div class="line">train_dataset, train_labels = reformat( train_dataset, train_labels )</div><div class="line">valid_dataset, valid_labels = reformat( valid_dataset, valid_labels )</div><div class="line">test_dataset,  test_labels  = reformat( test_dataset,  test_labels  )</div><div class="line"></div><div class="line">print(<span class="string">" Training set   : "</span>, train_dataset.shape, train_labels.shape )</div><div class="line">print(<span class="string">" Validation set : "</span>, valid_dataset.shape, valid_labels.shape )</div><div class="line">print(<span class="string">" Test set       : "</span>, test_dataset.shape,  test_labels.shape  )</div></pre></td></tr></table></figure></p>
+<p>得到的结果如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Training set   :  (<span class="number">200000</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>) (<span class="number">200000</span>, <span class="number">10</span>)</div><div class="line">Validation set :  (<span class="number">10000</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>) (<span class="number">10000</span>, <span class="number">10</span>)</div><div class="line">Test set       :  (<span class="number">10000</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>) (<span class="number">10000</span>, <span class="number">10</span>)</div></pre></td></tr></table></figure></p>
+<p>注意到,我们的数据是黑白图像,所以channel是1.自此,数据整理完毕</p>
+<h4 id="构建一个简单的卷积神经网络"><a href="#构建一个简单的卷积神经网络" class="headerlink" title="构建一个简单的卷积神经网络"></a>构建一个简单的卷积神经网络</h4><p>我们将要构建的卷积神经网络超级无敌简单,就只有两个卷积层和一个全连接层.</p>
+<p>在这里,我们先定义一个计算精确度的函数<code>accuracy()</code>,思想很简单就是准确预测的结果个数和所有预测次数的比值:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">( predictions, labels )</span>:</span></div><div class="line">    <span class="keyword">return</span> (<span class="number">100.0</span> * np.sum(np.argmax(predictions, <span class="number">1</span>) == np.argmax(labels, <span class="number">1</span>))</div><div class="line">           / predictions.shape[<span class="number">0</span>])</div></pre></td></tr></table></figure></p>
+<p>接着正式开始构建卷积神经网络<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">batch_size = <span class="number">16</span>           <span class="comment"># SGD,每次投喂的数据个数</span></div><div class="line">patch_size = <span class="number">5</span>            <span class="comment"># 卷积核的维度大小</span></div><div class="line">depth      = <span class="number">16</span>           <span class="comment"># 卷积层的卷积核个数</span></div><div class="line">num_hidden = <span class="number">64</span>           <span class="comment"># 全连接层的神经元个数</span></div><div class="line"></div><div class="line">graph = tf.Graph()</div><div class="line"></div><div class="line"><span class="keyword">with</span> graph.as_default():</div><div class="line">    <span class="comment"># Input data.</span></div><div class="line">    tf_train_dataset = tf.placeholder(</div><div class="line">        tf.float32, shape=(batch_size, image_size, image_size, num_channels)</div><div class="line">    )</div><div class="line">    tf_train_labels  = tf.placeholder(tf.float32, shape=(batch_size, num_labels))</div><div class="line">    tf_valid_dataset = tf.constant(valid_dataset)</div><div class="line">    tf_test_dataset  = tf.constant(test_dataset)</div><div class="line"></div><div class="line">    <span class="comment"># Variables</span></div><div class="line">    <span class="comment"># 第二个参数filter：相当于CNN中的卷积核，它要求是一个Tensor，具有</span></div><div class="line">    <span class="comment"># [filter_height, filter_width,  in_channels, out_channels]这样的shape，具体含义是</span></div><div class="line">    <span class="comment"># [卷积核的高度，卷积核的宽度，图像通道数，卷积核个数]，要求类型与参数input相同，</span></div><div class="line">    <span class="comment"># 有一个地方需要注意，第三维in_channels，就是参数input的第四维</span></div><div class="line">    <span class="comment"># tf.nn.conv2d()返回值,哇,高维的数据好难理解和计算呀</span></div><div class="line">    layer1_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, num_channels, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer1_biases  = tf.Variable(tf.zeros([depth]))</div><div class="line">    layer2_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, depth, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer2_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[depth]))</div><div class="line">    layer3_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [image_size // <span class="number">4</span> * image_size // <span class="number">4</span> * depth, num_hidden], stddev = <span class="number">0.1</span>))</div><div class="line">    layer3_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_hidden]))</div><div class="line">    layer4_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [num_hidden, num_labels], stddev=<span class="number">0.1</span>))</div><div class="line">    layer4_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_labels]))</div><div class="line"></div><div class="line">    <span class="comment"># Models.</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(data)</span>:</span></div><div class="line">        conv   = tf.nn.conv2d(data, layer1_weights, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden = tf.nn.relu(conv + layer1_biases)</div><div class="line">        conv   = tf.nn.conv2d(hidden, layer2_weights, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden = tf.nn.relu(conv + layer2_biases)</div><div class="line">        shape  = hidden.get_shape().as_list()</div><div class="line">        reshape = tf.reshape( hidden, [shape[<span class="number">0</span>], shape[<span class="number">1</span>]*shape[<span class="number">2</span>]*shape[<span class="number">3</span>]])</div><div class="line">        hidden = tf.nn.relu(tf.matmul( reshape, layer3_weights) + layer3_biases )</div><div class="line">        <span class="keyword">return</span> tf.matmul( hidden, layer4_weights ) + layer4_biases</div><div class="line"></div><div class="line">    logits = model(tf_train_dataset)</div><div class="line">    loss   = tf.reduce_mean(</div><div class="line">        tf.nn.softmax_cross_entropy_with_logits(labels=tf_train_labels, logits=logits))</div><div class="line"></div><div class="line">    <span class="comment"># Optimizer</span></div><div class="line">    optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>).minimize(loss)</div><div class="line"></div><div class="line">    <span class="comment"># Predicitons for the training, validation, and test data.</span></div><div class="line">    train_prediciton = tf.nn.softmax(logits)</div><div class="line">    valid_prediction = tf.nn.softmax(model(tf_valid_dataset))</div><div class="line">    test_prediction  = tf.nn.softmax(model(tf_test_dataset ))</div></pre></td></tr></table></figure></p>
+<p>在构建这一个如此简答的卷积神经网络花了我好多时间,其中很大一个原因就是卷积层的计算和理解.一个四维的数据( ⊙o⊙ )我花了不少时间来研究了一下构建卷积神经网络的核心函数<code>tf.nn.conv2d()</code>,理解其输入和输出.其详细的探索过程,参见本人的另外一篇拙文<a href="/tf-nn-conv2d.md">探索tf.nn.conv2d()</a></p>
+<h4 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h4><p>训练的过程就是一个普通的随机梯度下降法的实现过程,很容易理解.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">num_steps = <span class="number">1001</span></div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session(graph = graph) <span class="keyword">as</span> session:</div><div class="line">    tf.global_variables_initializer().run()</div><div class="line">    print(<span class="string">"Initialized"</span>)</div><div class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> range(num_steps):</div><div class="line">        offset = (step * batch_size) % (train_labels.shape[<span class="number">0</span>] - batch_size)</div><div class="line">        batch_data   = train_dataset[offset: (offset + batch_size), :, :, :]</div><div class="line">        batch_labels = train_labels[offset: (offset + batch_size), :]</div><div class="line">        feed_dict    = &#123;tf_train_dataset : batch_data, tf_train_labels : batch_labels&#125;</div><div class="line">        _, l, predictions = session.run(</div><div class="line">        [optimizer, loss, train_prediciton], feed_dict = feed_dict)</div><div class="line">        <span class="keyword">if</span>(step % <span class="number">50</span> == <span class="number">0</span>):</div><div class="line">            print(<span class="string">"Minibatch loss at step %d: %f"</span> % (step, l))</div><div class="line">            print(<span class="string">"Minibatch accuracy : %.1f%%"</span>   % accuracy(predictions, batch_labels))</div><div class="line">            print(<span class="string">"Validation accuracy: %.1f%%"</span>   % accuracy(</div><div class="line">                valid_prediction.eval(), valid_labels))</div><div class="line">            print(<span class="string">"Test accuracy      : %.1f%%"</span>   % accuracy(</div><div class="line">                test_prediction.eval(),  test_labels ))</div><div class="line">    print(<span class="string">"Test accuracy      : %.1f%%"</span> % accuracy(test_prediction.eval(), test_labels))</div></pre></td></tr></table></figure></p>
+<p>该训练过程产出的训练结果如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">Initialized</div><div class="line">Minibatch loss at step 0: 3.185863</div><div class="line">Minibatch accuracy : 12.5%</div><div class="line">Validation accuracy: 10.0%</div><div class="line">Test accuracy      : 10.0%</div><div class="line">Minibatch loss at step 50: 2.149336</div><div class="line">Minibatch accuracy : 18.8%</div><div class="line">Validation accuracy: 25.5%</div><div class="line">Test accuracy      : 26.4%</div><div class="line">Minibatch loss at step 100: 1.362517</div><div class="line">Minibatch accuracy : 50.0%</div><div class="line">Validation accuracy: 67.0%</div><div class="line">Test accuracy      : 74.6%</div><div class="line">Minibatch loss at step 150: 0.608616</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 74.3%</div><div class="line">Test accuracy      : 81.9%</div><div class="line">Minibatch loss at step 200: 1.148737</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 73.3%</div><div class="line">Test accuracy      : 81.2%</div><div class="line">Minibatch loss at step 250: 0.786106</div><div class="line">Minibatch accuracy : 62.5%</div><div class="line">Validation accuracy: 76.2%</div><div class="line">Test accuracy      : 83.6%</div><div class="line">Minibatch loss at step 300: 0.670637</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 77.5%</div><div class="line">Test accuracy      : 85.2%</div><div class="line">Minibatch loss at step 350: 1.414526</div><div class="line">Minibatch accuracy : 62.5%</div><div class="line">Validation accuracy: 77.3%</div><div class="line">Test accuracy      : 84.5%</div><div class="line">Minibatch loss at step 400: 0.885400</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 79.0%</div><div class="line">Test accuracy      : 86.2%</div><div class="line">Minibatch loss at step 450: 0.200270</div><div class="line">Minibatch accuracy : 93.8%</div><div class="line">Validation accuracy: 79.5%</div><div class="line">Test accuracy      : 86.5%</div><div class="line">Minibatch loss at step 500: 1.044583</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 78.2%</div><div class="line">Test accuracy      : 85.3%</div><div class="line">Minibatch loss at step 550: 0.497158</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 80.8%</div><div class="line">Test accuracy      : 88.3%</div><div class="line">Minibatch loss at step 600: 0.612175</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 79.9%</div><div class="line">Test accuracy      : 87.0%</div><div class="line">Minibatch loss at step 650: 0.874741</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 81.0%</div><div class="line">Test accuracy      : 88.4%</div><div class="line">Minibatch loss at step 700: 0.810160</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 80.8%</div><div class="line">Test accuracy      : 88.2%</div><div class="line">Minibatch loss at step 750: 0.436342</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 81.7%</div><div class="line">Test accuracy      : 89.0%</div><div class="line">Minibatch loss at step 800: 0.025083</div><div class="line">Minibatch accuracy : 100.0%</div><div class="line">Validation accuracy: 81.9%</div><div class="line">Test accuracy      : 89.1%</div><div class="line">Minibatch loss at step 850: 0.135296</div><div class="line">Minibatch accuracy : 100.0%</div><div class="line">Validation accuracy: 81.6%</div><div class="line">Test accuracy      : 89.0%</div><div class="line">Minibatch loss at step 900: 1.040877</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 81.8%</div><div class="line">Test accuracy      : 89.2%</div><div class="line">Minibatch loss at step 950: 0.581194</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 81.9%</div><div class="line">Test accuracy      : 89.3%</div><div class="line">Minibatch loss at step 1000: 0.379073</div><div class="line">Minibatch accuracy : 93.8%</div><div class="line">Validation accuracy: 81.9%</div><div class="line">Test accuracy      : 89.6%</div><div class="line">Test accuracy      : 89.6%</div></pre></td></tr></table></figure></p>
+<p>该训练结果,嗯,说实话,并不是很好,还不如之前训练的普通的三层神经网络.毕竟这个网络结果太简单了,还有很多的改进空间.</p>
+<h4 id="添加池化层"><a href="#添加池化层" class="headerlink" title="添加池化层"></a>添加池化层</h4><p>上面的卷积神经网络是使用卷积核的步长来压缩数据空间的,而我们普遍的卷积神经网络都是使用池化层来进行该步骤哦.在tensorflow中池化层所使用的函数有一个常用的是<a href="https://www.tensorflow.org/api_docs/python/tf/nn/max_pool" target="_blank" rel="external"><code>tf.nn.max_pool()</code></a>,在这里只需要修改一下卷积神经网络构建部分的代码即可<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">batch_size = <span class="number">16</span></div><div class="line">patch_size = <span class="number">5</span></div><div class="line">depth      = <span class="number">16</span></div><div class="line">num_hidden = <span class="number">64</span></div><div class="line"></div><div class="line">graph = tf.Graph()</div><div class="line"></div><div class="line"><span class="keyword">with</span> graph.as_default():</div><div class="line">    <span class="comment"># Input data.</span></div><div class="line">    tf_train_dataset = tf.placeholder(</div><div class="line">        tf.float32, shape=(batch_size, image_size, image_size, num_channels)</div><div class="line">    )</div><div class="line">    tf_train_labels  = tf.placeholder(tf.float32, shape=(batch_size, num_labels))</div><div class="line">    tf_valid_dataset = tf.constant(valid_dataset)</div><div class="line">    tf_test_dataset  = tf.constant(test_dataset)</div><div class="line">    </div><div class="line">    <span class="comment"># Variables</span></div><div class="line">    layer1_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, num_channels, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer1_biases  = tf.Variable(tf.zeros([depth]))</div><div class="line">    layer2_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, depth, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer2_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[depth]))</div><div class="line">    layer3_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [image_size // <span class="number">4</span> * image_size // <span class="number">4</span> * depth, num_hidden], stddev = <span class="number">0.1</span>))</div><div class="line">    layer3_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_hidden]))</div><div class="line">    layer4_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [num_hidden, num_labels], stddev=<span class="number">0.1</span>))</div><div class="line">    layer4_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_labels]))</div><div class="line">    </div><div class="line">    <span class="comment"># Models.</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(data)</span>:</span></div><div class="line">        <span class="comment"># 卷积中strides修改为1</span></div><div class="line">        conv   = tf.nn.conv2d(data, layer1_weights, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden = tf.nn.relu(conv + layer1_biases)</div><div class="line"></div><div class="line">        <span class="comment"># 添加了池化层,池化层的核大小为2*2,步长为2</span></div><div class="line">        pooling = tf.nn.max_pool(hidden, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</div><div class="line">        <span class="comment"># 同上</span></div><div class="line">        conv   = tf.nn.conv2d(pooling, layer2_weights, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden = tf.nn.relu(conv + layer2_biases)</div><div class="line">        <span class="comment"># 同上</span></div><div class="line">        pooling = tf.nn.max_pool(hidden, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</div><div class="line">        shape  = pooling.get_shape().as_list()</div><div class="line">        reshape = tf.reshape( hidden, [shape[<span class="number">0</span>], shape[<span class="number">1</span>]*shape[<span class="number">2</span>]*shape[<span class="number">3</span>]])</div><div class="line">        hidden = tf.nn.relu(tf.matmul( reshape, layer3_weights) + layer3_biases )</div><div class="line">        <span class="keyword">return</span> tf.matmul( hidden, layer4_weights ) + layer4_biases</div><div class="line">    </div><div class="line">    logits = model(tf_train_dataset)</div><div class="line">    loss   = tf.reduce_mean(</div><div class="line">        tf.nn.softmax_cross_entropy_with_logits(labels=tf_train_labels, logits=logits))</div><div class="line">    </div><div class="line">    <span class="comment"># Optimizer</span></div><div class="line">    optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>).minimize(loss)</div><div class="line">    </div><div class="line">    <span class="comment"># Predicitons for the training, validation, and test data.</span></div><div class="line">    train_prediciton = tf.nn.softmax(logits)</div><div class="line">    valid_prediction = tf.nn.softmax(model(tf_valid_dataset))</div><div class="line">    test_prediction  = tf.nn.softmax(model(tf_test_dataset ))</div></pre></td></tr></table></figure></p>
+<p>这只是一个简单修改,具体修改内容可以看注释进行对比,然后训练添加了池化层的模型.该训练的过程跟上面的卷积神经网络一毛一样,仅用来对比训练结果.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">num_steps = <span class="number">1001</span></div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session(graph = graph) <span class="keyword">as</span> session:</div><div class="line">    tf.global_variables_initializer().run()</div><div class="line">    print(<span class="string">"Initialized"</span>)</div><div class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> range(num_steps):</div><div class="line">        offset = (step * batch_size) % (train_labels.shape[<span class="number">0</span>] - batch_size)</div><div class="line">        batch_data   = train_dataset[offset: (offset + batch_size), :, :, :]</div><div class="line">        batch_labels = train_labels[offset: (offset + batch_size), :]</div><div class="line">        feed_dict    = &#123;tf_train_dataset : batch_data, tf_train_labels : batch_labels&#125;</div><div class="line">        _, l, predictions = session.run(</div><div class="line">        [optimizer, loss, train_prediciton], feed_dict = feed_dict)</div><div class="line">        <span class="keyword">if</span>(step % <span class="number">50</span> == <span class="number">0</span>):</div><div class="line">            print(<span class="string">"Minibatch loss at step %d: %f"</span> % (step, l))</div><div class="line">            print(<span class="string">"Minibatch accuracy : %.1f%%"</span>   % accuracy(predictions, batch_labels))</div><div class="line">            print(<span class="string">"Validation accuracy: %.1f%%"</span>   % accuracy(</div><div class="line">                valid_prediction.eval(), valid_labels))</div><div class="line">            print(<span class="string">"Test accuracy      : %.1f%%"</span>   % accuracy(</div><div class="line">                test_prediction.eval(),  test_labels ))</div><div class="line">    print(<span class="string">"Test accuracy      : %.1f%%"</span> % accuracy(test_prediction.eval(), test_labels))</div></pre></td></tr></table></figure></p>
+<p>得到的训练结果如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">Initialized</div><div class="line">Minibatch loss at step 0: 3.369772</div><div class="line">Minibatch accuracy : 6.2%</div><div class="line">Validation accuracy: 10.0%</div><div class="line">Test accuracy      : 10.0%</div><div class="line">Minibatch loss at step 50: 1.835429</div><div class="line">Minibatch accuracy : 25.0%</div><div class="line">Validation accuracy: 49.5%</div><div class="line">Test accuracy      : 53.8%</div><div class="line">Minibatch loss at step 100: 1.258682</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 69.1%</div><div class="line">Test accuracy      : 76.2%</div><div class="line">Minibatch loss at step 150: 0.825770</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 75.6%</div><div class="line">Test accuracy      : 83.1%</div><div class="line">Minibatch loss at step 200: 1.012264</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 74.3%</div><div class="line">Test accuracy      : 81.6%</div><div class="line">Minibatch loss at step 250: 0.624423</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 76.8%</div><div class="line">Test accuracy      : 84.0%</div><div class="line">Minibatch loss at step 300: 0.578071</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 78.5%</div><div class="line">Test accuracy      : 85.8%</div><div class="line">Minibatch loss at step 350: 1.048332</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 78.8%</div><div class="line">Test accuracy      : 85.8%</div><div class="line">Minibatch loss at step 400: 0.842998</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 79.3%</div><div class="line">Test accuracy      : 86.6%</div><div class="line">Minibatch loss at step 450: 0.198143</div><div class="line">Minibatch accuracy : 93.8%</div><div class="line">Validation accuracy: 80.5%</div><div class="line">Test accuracy      : 87.5%</div><div class="line">Minibatch loss at step 500: 1.044419</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 80.7%</div><div class="line">Test accuracy      : 88.3%</div><div class="line">Minibatch loss at step 550: 0.667056</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 80.8%</div><div class="line">Test accuracy      : 88.1%</div><div class="line">Minibatch loss at step 600: 0.454019</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 81.6%</div><div class="line">Test accuracy      : 88.8%</div><div class="line">Minibatch loss at step 650: 0.988948</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 82.0%</div><div class="line">Test accuracy      : 89.5%</div><div class="line">Minibatch loss at step 700: 0.723278</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 81.5%</div><div class="line">Test accuracy      : 88.7%</div><div class="line">Minibatch loss at step 750: 0.365816</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 82.5%</div><div class="line">Test accuracy      : 89.9%</div><div class="line">Minibatch loss at step 800: 0.066661</div><div class="line">Minibatch accuracy : 100.0%</div><div class="line">Validation accuracy: 82.8%</div><div class="line">Test accuracy      : 89.6%</div><div class="line">Minibatch loss at step 850: 0.204858</div><div class="line">Minibatch accuracy : 93.8%</div><div class="line">Validation accuracy: 82.5%</div><div class="line">Test accuracy      : 90.1%</div><div class="line">Minibatch loss at step 900: 1.044320</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 82.4%</div><div class="line">Test accuracy      : 89.7%</div><div class="line">Minibatch loss at step 950: 0.612166</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 83.5%</div><div class="line">Test accuracy      : 90.7%</div><div class="line">Minibatch loss at step 1000: 0.502493</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 82.9%</div><div class="line">Test accuracy      : 90.4%</div><div class="line">Test accuracy      : 90.4%</div></pre></td></tr></table></figure></p>
+<p>结果有了一点点的改善,改善不是特别的明显.</p>
+<h4 id="实现一个经典的LeNet5网络结构"><a href="#实现一个经典的LeNet5网络结构" class="headerlink" title="实现一个经典的LeNet5网络结构"></a>实现一个经典的LeNet5网络结构</h4><p>LeNet5是一个十分经典的卷积神经网络,其机构如下所示:<br><img src="LeNet5.png" alt="LeNet5.png"><br>结果如下<br><img src="asamples.gif" alt="asamples.gif"><br>根据该图,我们只需要修改tensorflow中graph的代码,即可构造一个类似于的LeNet5网络架构的网络了.<br>注意,修改了网络结构需要重新计算最后生成图片的大小.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">batch_size = <span class="number">16</span></div><div class="line">patch_size = <span class="number">5</span></div><div class="line">depth      = <span class="number">16</span></div><div class="line">num_hidden = <span class="number">64</span></div><div class="line"></div><div class="line">graph = tf.Graph()</div><div class="line"></div><div class="line"><span class="keyword">with</span> graph.as_default():</div><div class="line">    <span class="comment"># Input data.</span></div><div class="line">    tf_train_dataset = tf.placeholder(</div><div class="line">        tf.float32, shape=(batch_size, image_size, image_size, num_channels)</div><div class="line">    )</div><div class="line">    tf_train_labels  = tf.placeholder(tf.float32, shape=(batch_size, num_labels))</div><div class="line">    tf_valid_dataset = tf.constant(valid_dataset)</div><div class="line">    tf_test_dataset  = tf.constant(test_dataset)</div><div class="line">    </div><div class="line">    <span class="comment"># Variables</span></div><div class="line">    layer1_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, num_channels, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer1_biases  = tf.Variable(tf.zeros([depth]))</div><div class="line">    <span class="comment"># add the max_pool arguments</span></div><div class="line">    <span class="comment"># l1_pool_weight = tf.Variable()</span></div><div class="line">    layer2_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [patch_size, patch_size, depth, depth], stddev=<span class="number">0.1</span>))</div><div class="line">    layer2_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[depth]))</div><div class="line">    <span class="comment"># 重新计算生成图片的大小</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_conv_pool_size</span><span class="params">( image_size, patch_size)</span>:</span></div><div class="line">        <span class="keyword">return</span> (image_size - patch_size + <span class="number">1</span>) // <span class="number">2</span></div><div class="line">    layer3_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [get_conv_pool_size(get_conv_pool_size(image_size, patch_size), patch_size) ** <span class="number">2</span> * depth, \</div><div class="line">         num_hidden],\</div><div class="line">        stddev = <span class="number">0.1</span>))</div><div class="line">    layer3_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_hidden]))</div><div class="line">    layer4_weights = tf.Variable(tf.truncated_normal(</div><div class="line">        [num_hidden, num_labels], stddev=<span class="number">0.1</span>))</div><div class="line">    layer4_biases  = tf.Variable(tf.constant(<span class="number">1.0</span>, shape=[num_labels]))</div><div class="line">    </div><div class="line">    <span class="comment"># Models.</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(data)</span>:</span></div><div class="line">        <span class="comment"># input data is 28 * 28</span></div><div class="line">        conv1    = tf.nn.conv2d(data, layer1_weights, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"VALID"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden1  = tf.nn.relu(conv1 + layer1_biases)</div><div class="line">        <span class="comment"># hidden1    is 24 * 24</span></div><div class="line">        pooling1 = tf.nn.max_pool(hidden1, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"VALID"</span>)</div><div class="line">        <span class="comment"># pooling1   is 12 * 12</span></div><div class="line">        conv2    = tf.nn.conv2d(pooling1, layer2_weights, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"VALID"</span>, use_cudnn_on_gpu=<span class="keyword">False</span>)</div><div class="line">        hidden2  = tf.nn.relu(conv2 + layer2_biases)</div><div class="line">        <span class="comment"># hidden2    is 8 * 8</span></div><div class="line">        pooling2 = tf.nn.max_pool(hidden2, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"VALID"</span>)</div><div class="line">        <span class="comment"># pooling2   is 4 * 4</span></div><div class="line">        shape  = pooling2.get_shape().as_list()</div><div class="line">        reshape = tf.reshape( pooling2, [shape[<span class="number">0</span>], shape[<span class="number">1</span>]*shape[<span class="number">2</span>]*shape[<span class="number">3</span>]])</div><div class="line">        hidden = tf.nn.relu(tf.matmul( reshape, layer3_weights) + layer3_biases )</div><div class="line">        <span class="keyword">return</span> tf.matmul( hidden, layer4_weights ) + layer4_biases</div><div class="line">    </div><div class="line">    logits = model(tf_train_dataset)</div><div class="line">    loss   = tf.reduce_mean(</div><div class="line">        tf.nn.softmax_cross_entropy_with_logits(labels=tf_train_labels, logits=logits))</div><div class="line">    </div><div class="line">    <span class="comment"># Optimizer</span></div><div class="line">    optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>).minimize(loss)</div><div class="line">    </div><div class="line">    <span class="comment"># Predicitons for the training, validation, and test data.</span></div><div class="line">    train_prediciton = tf.nn.softmax(logits)</div><div class="line">    valid_prediction = tf.nn.softmax(model(tf_valid_dataset))</div><div class="line">    test_prediction  = tf.nn.softmax(model(tf_test_dataset ))</div></pre></td></tr></table></figure></p>
+<p>训练该生成模型,因为该模型收敛得慢一些,所以,我增加了训练的次数,从1001次改成了10001次.并且可以观察到,该模型已经逐渐趋于稳定了.<br>训练结果如下所示:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">Initialized</div><div class="line">Minibatch loss at step 0: 3.063954</div><div class="line">Minibatch accuracy : 6.2%</div><div class="line">Validation accuracy: 10.0%</div><div class="line">Test accuracy      : 10.0%</div><div class="line">Minibatch loss at step 500: 0.920886</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 78.8%</div><div class="line">Test accuracy      : 85.7%</div><div class="line">Minibatch loss at step 1000: 0.605112</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 81.8%</div><div class="line">Test accuracy      : 89.3%</div><div class="line">Minibatch loss at step 1500: 0.555171</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 84.8%</div><div class="line">Test accuracy      : 91.0%</div><div class="line">Minibatch loss at step 2000: 0.826236</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 84.6%</div><div class="line">Test accuracy      : 91.4%</div><div class="line">Minibatch loss at step 2500: 0.663057</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 85.4%</div><div class="line">Test accuracy      : 91.7%</div><div class="line">Minibatch loss at step 3000: 0.747276</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 85.5%</div><div class="line">Test accuracy      : 91.9%</div><div class="line">Minibatch loss at step 3500: 0.708025</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 86.2%</div><div class="line">Test accuracy      : 92.7%</div><div class="line">Minibatch loss at step 4000: 0.046353</div><div class="line">Minibatch accuracy : 100.0%</div><div class="line">Validation accuracy: 86.5%</div><div class="line">Test accuracy      : 93.1%</div><div class="line">Minibatch loss at step 4500: 0.519293</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 87.0%</div><div class="line">Test accuracy      : 93.2%</div><div class="line">Minibatch loss at step 5000: 0.568638</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 86.8%</div><div class="line">Test accuracy      : 93.0%</div><div class="line">Minibatch loss at step 5500: 0.231502</div><div class="line">Minibatch accuracy : 93.8%</div><div class="line">Validation accuracy: 87.2%</div><div class="line">Test accuracy      : 93.4%</div><div class="line">Minibatch loss at step 6000: 0.876349</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 87.0%</div><div class="line">Test accuracy      : 93.4%</div><div class="line">Minibatch loss at step 6500: 0.617021</div><div class="line">Minibatch accuracy : 81.2%</div><div class="line">Validation accuracy: 87.5%</div><div class="line">Test accuracy      : 93.5%</div><div class="line">Minibatch loss at step 7000: 0.159559</div><div class="line">Minibatch accuracy : 100.0%</div><div class="line">Validation accuracy: 87.6%</div><div class="line">Test accuracy      : 93.8%</div><div class="line">Minibatch loss at step 7500: 0.437542</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 87.1%</div><div class="line">Test accuracy      : 93.3%</div><div class="line">Minibatch loss at step 8000: 0.537314</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 88.1%</div><div class="line">Test accuracy      : 93.9%</div><div class="line">Minibatch loss at step 8500: 0.458627</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 88.2%</div><div class="line">Test accuracy      : 94.3%</div><div class="line">Minibatch loss at step 9000: 0.507361</div><div class="line">Minibatch accuracy : 75.0%</div><div class="line">Validation accuracy: 88.0%</div><div class="line">Test accuracy      : 93.8%</div><div class="line">Minibatch loss at step 9500: 0.630668</div><div class="line">Minibatch accuracy : 68.8%</div><div class="line">Validation accuracy: 87.8%</div><div class="line">Test accuracy      : 93.5%</div><div class="line">Minibatch loss at step 10000: 0.416923</div><div class="line">Minibatch accuracy : 87.5%</div><div class="line">Validation accuracy: 88.4%</div><div class="line">Test accuracy      : 94.1%</div><div class="line">Test accuracy      : 94.1%</div></pre></td></tr></table></figure></p>
+<p>从该结果可以明显看到图像识别的效率得到了显著的提高.</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>通过仔细分析和动手构造一些简单的经典的神经网络,可以让我们更加直观深入得去了解熟悉和应用我们的知识,发现更多的细节.<br>主要耗时的地方在于四维的数据,我不知道怎么样进行运算,所以花了很多时间去探索<code>tf.nn.conv2d()</code>这一个函数</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/13/Udacity-note-book/" rel="next" title="Udacity-note-book">
+                <i class="fa fa-chevron-left"></i> Udacity-note-book
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/04/tf-nn-conv2d/" rel="prev" title="探索tf.nn.conv2d()">
+                探索tf.nn.conv2d() <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hashiqi.jpg"
+               alt="崔志颖" />
+          <p class="site-author-name" itemprop="name">崔志颖</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CuiZhiying" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/108841075356564343375" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据集的提取"><span class="nav-number">2.</span> <span class="nav-text">数据集的提取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建一个简单的卷积神经网络"><span class="nav-number">3.</span> <span class="nav-text">构建一个简单的卷积神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练神经网络"><span class="nav-number">4.</span> <span class="nav-text">训练神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加池化层"><span class="nav-number">5.</span> <span class="nav-text">添加池化层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现一个经典的LeNet5网络结构"><span class="nav-number">6.</span> <span class="nav-text">实现一个经典的LeNet5网络结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">崔志颖</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
