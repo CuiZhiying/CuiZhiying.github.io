@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="tutorial,tensorflow,note,deep-learning," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/hashiqi.jpg?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="安装好环境都是一些非常常用的包,自己电脑环境缺失的请用pip install package-name来装上,可以先不在这里看这些代码1234567891011from __future__ import print_functionimport matplotlib.pyplot as pltimport numpy as npimport osimport sysimport tarfilef">
+<meta name="keywords" content="tutorial,tensorflow,note,deep-learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lesson 1-- From machine learning to Deep learning">
+<meta property="og:url" content="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/index.html">
+<meta property="og:site_name" content="花满楼">
+<meta property="og:description" content="安装好环境都是一些非常常用的包,自己电脑环境缺失的请用pip install package-name来装上,可以先不在这里看这些代码1234567891011from __future__ import print_functionimport matplotlib.pyplot as pltimport numpy as npimport osimport sysimport tarfilef">
+<meta property="og:image" content="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/Access-denied.png">
+<meta property="og:updated_time" content="2017-12-12T12:50:14.710Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lesson 1-- From machine learning to Deep learning">
+<meta name="twitter:description" content="安装好环境都是一些非常常用的包,自己电脑环境缺失的请用pip install package-name来装上,可以先不在这里看这些代码1234567891011from __future__ import print_functionimport matplotlib.pyplot as pltimport numpy as npimport osimport sysimport tarfilef">
+<meta name="twitter:image" content="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/Access-denied.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/"/>
+
+
+
+
+
+  <title>Lesson 1-- From machine learning to Deep learning | 花满楼</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'true', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花满楼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">一帘春雨瓢儿菜，满架秋风扁豆花。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="崔志颖">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/hashiqi.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花满楼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Lesson 1-- From machine learning to Deep learning</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-12T16:57:26+08:00">
+                2017-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Udacity-Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Udacity Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/12/Udacity-deep-learning-class-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://cuizhiying.github.io/2017/12/12/Udacity-deep-learning-class-1/" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="安装好环境"><a href="#安装好环境" class="headerlink" title="安装好环境"></a>安装好环境</h2><p>都是一些非常常用的包,自己电脑环境缺失的请用<code>pip install package-name</code>来装上,可以先不在这里看这些代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> tarfile</div><div class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> display, Image</div><div class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> ndimage</div><div class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</div><div class="line"><span class="keyword">from</span> six.moves.urllib.request <span class="keyword">import</span> urlretrieve</div><div class="line"><span class="keyword">from</span> six.moves <span class="keyword">import</span> cPickle <span class="keyword">as</span> pickle</div></pre></td></tr></table></figure></p>
+<h2 id="从网上下载原始数据"><a href="#从网上下载原始数据" class="headerlink" title="从网上下载原始数据"></a>从网上下载原始数据</h2><p>使用代码进行下载的时候,有可能会被服务器拦截,最简单的方法就是双击点开<a href="http://yaroslavvb.com/upload/notMNIST/" target="_blank" rel="external"><em><strong>这里</strong></em></a>, 手动下载到跟这个脚本同一级的文件夹中. 然后跳到下一节代码中去.<br>注意这里一共下载了两个数据包,一个是<code>notMNIST_large.tar.gz</code>,作为训练集和验证集, 一个是<code>notMNIST_small.tar.gz</code>, 作为测试集.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># url = 'http://commondatastorage.googleapis.com/books1000/'</span></div><div class="line"><span class="comment"># 上面的url我打不开,百度了另外一个数据仓库如下</span></div><div class="line">url = <span class="string">'http://yaroslavvb.com/upload/notMNIST/'</span></div><div class="line">last_percent_reported = <span class="keyword">None</span></div><div class="line">data_root = <span class="string">'.'</span></div><div class="line">notMNIST_large_size = <span class="number">247336696</span></div><div class="line">notMNIST_small_size = <span class="number">8458043</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">download_progress_hook</span><span class="params">(count, blockSize, totalSize)</span>:</span></div><div class="line">    <span class="string">""" A hook to report the a</span></div><div class="line">    """</div><div class="line">    <span class="keyword">global</span> last_percent_reported</div><div class="line">    percent = int(count * blockSize * <span class="number">100</span> / totalSize)</div><div class="line"></div><div class="line">    <span class="keyword">if</span> last_percent_reported != percent:</div><div class="line">        <span class="keyword">if</span> percent % <span class="number">5</span> == <span class="number">0</span>:</div><div class="line">            sys.stdout.write(<span class="string">"%s%%"</span> % percent)</div><div class="line">            sys.stdout.flush()</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            sys.stdout.write(<span class="string">"&gt;"</span>)</div><div class="line">            sys.stdout.flush()</div><div class="line"></div><div class="line">        last_percent_reported = percent</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maybe_download</span><span class="params">( filename, expected_bytes, force=False)</span>:</span></div><div class="line">    <span class="string">""" helping:</span></div><div class="line">        下面我们再来看看 urllib 模块提供的 urlretrieve() 函数。urlretrieve() 方法直接将远程数据下载到本地。</div><div class="line"></div><div class="line">        1 &gt;&gt;&gt; help(urllib.urlretrieve)</div><div class="line">        2     Help on function urlretrieve in module urllib:</div><div class="line"></div><div class="line">        urlretrieve(url, filename=None, reporthook=None, data=None)</div><div class="line">        参数 finename 指定了保存本地路径（如果参数未指定，urllib会生成一个临时文件保存数据。）</div><div class="line">        参数 reporthook 是一个回调函数，当连接上服务器、以及相应的数据块传输完毕时会触发该回调，我们可以利用这个回调函数来显示当前的下载进度。</div><div class="line">        参数 data 指 post 到服务器的数据</div><div class="line"></div><div class="line">        该方法返回一个包含两个元素的(filename, headers)元组，filename 表示保存到本地的路径，header 表示服务器的响应头。</div><div class="line">    """</div><div class="line">    dest_filename = os.path.join(data_root, filename)</div><div class="line">    <span class="keyword">if</span> force <span class="keyword">or</span> <span class="keyword">not</span> os.path.exists(dest_filename):</div><div class="line">        print(<span class="string">"Attempint to download:"</span>, filename)</div><div class="line">        filename, _ = urlretrieve(url + filename, dest_filename, reporthook=download_progress_hook)</div><div class="line">        print(<span class="string">"\nDownload Complete!"</span>)</div><div class="line">    statinfo = os.stat(dest_filename)</div><div class="line">    <span class="keyword">if</span> statinfo.st_size == expected_bytes:</div><div class="line">        print(<span class="string">"Found and verified"</span>, dest_filename)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">raise</span> Exception(</div><div class="line">                <span class="string">"Faild to verify "</span> + dest_filename + <span class="string">". Can you get to it with a browser?"</span>)</div><div class="line">    <span class="keyword">return</span> dest_filename</div><div class="line"></div><div class="line">train_filename = maybe_download(<span class="string">'notMNIST_large.tar.gz'</span>, notMNIST_large_size)</div><div class="line">test_filename = maybe_download(<span class="string">'notMNIST_small.tar.gz'</span>, notMNIST_small_size)</div></pre></td></tr></table></figure></p>
+<p>在下载的数据的时候,视频中给出的链接(也就是在代码中被注释掉的那个url)我下载不了,在浏览器中打开显示如下<img src="Access-denied.png" alt="Access-denied">, 解决方法是使用上面代码中使用的url.</p>
+<h2 id="解压文件"><a href="#解压文件" class="headerlink" title="解压文件"></a>解压文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">num_classes = <span class="number">10</span>      <span class="comment"># 共有十个文件夹, A到J</span></div><div class="line">np.random.seed(<span class="number">133</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maybe_extract</span><span class="params">(filename, force=False)</span>:</span></div><div class="line">    root = os.path.splitext(os.path.splitext(filename)[<span class="number">0</span>])[<span class="number">0</span>]  <span class="comment"># remove .tar.gz</span></div><div class="line">    <span class="keyword">if</span> os.path.isdir(root) <span class="keyword">and</span> <span class="keyword">not</span> force:</div><div class="line">        print(<span class="string">"%s already present - skipping extraction of %s."</span> % (root, filename))</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        print(<span class="string">"Extracting data for %s. This may take a while, Please wait"</span> % root)</div><div class="line">        tar = tarfile.open(filename)</div><div class="line">        sys.stdout.flush()</div><div class="line">        tar.extractall(data_root)</div><div class="line">        tar.close()</div><div class="line">    <span class="comment"># 这是一段超级经典的保存文件路径的代码</span></div><div class="line">    data_folders = [</div><div class="line">            os.path.join(root, d)</div><div class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> sorted(os.listdir(root))</div><div class="line">                <span class="keyword">if</span> os.path.isdir(os.path.join(root, d))</div><div class="line">                   ]</div><div class="line">    <span class="keyword">if</span> len(data_folders) != num_classes:</div><div class="line">        <span class="keyword">raise</span> Exception(</div><div class="line">                <span class="string">"Expected %d folders, one per class. Found %d instead."</span> % (num_classes, len(data_folders))</div><div class="line">                )</div><div class="line">    print(data_folders)</div><div class="line">    <span class="keyword">return</span> data_folders</div><div class="line"></div><div class="line">train_folders = maybe_extract(train_filename)</div><div class="line">test_folders = maybe_extract(test_filename)</div></pre></td></tr></table></figure>
+<h2 id="读取数据包中的每一个图像"><a href="#读取数据包中的每一个图像" class="headerlink" title="读取数据包中的每一个图像"></a>读取数据包中的每一个图像</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">image_size = <span class="number">28</span></div><div class="line">pixel_depth = <span class="number">255.0</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_letter</span><span class="params">(folder, min_num_images)</span>:</span></div><div class="line">    <span class="string">""" Load the data for a single letter label. """</span></div><div class="line">    image_files = os.listdir(folder)</div><div class="line">    <span class="comment"># 将每一个文件夹里面的图片都用一个大大的矩阵来保存起来</span></div><div class="line">    dataset = np.ndarray(shape=(len(image_files), image_size, image_size), dtype=np.float32) </div><div class="line"></div><div class="line">    print(folder)</div><div class="line">    num_images = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> image <span class="keyword">in</span> image_files:</div><div class="line">        image_file = os.path.join(folder, image)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            image_data = (ndimage.imread(image_file).astype(float) - pixel_depth / <span class="number">2</span> ) / pixel_depth <span class="comment"># 归一化处理</span></div><div class="line">            <span class="keyword">if</span> image_data.shape != (image_size, image_size):</div><div class="line">                <span class="keyword">raise</span> Exception(<span class="string">"Unexpected image shape: %s"</span> % str(image_data.shape) )</div><div class="line">            dataset[num_images, :, :] = image_data</div><div class="line">            num_images = num_images + <span class="number">1</span></div><div class="line">        <span class="keyword">except</span> IOError <span class="keyword">as</span> e:</div><div class="line">            print(<span class="string">'Could not read:'</span>, image_file, <span class="string">':'</span>, e, <span class="string">"- it\'s ok, skipping."</span>)</div><div class="line"></div><div class="line">    dataset = dataset[<span class="number">0</span> : num_images, :, :]</div><div class="line">    <span class="keyword">if</span> num_images &lt; min_num_images:</div><div class="line">        <span class="keyword">raise</span> Exception(<span class="string">"Many fewer images than expected: %d &lt; %d "</span> % (num_images, min_num_images))</div><div class="line"></div><div class="line">    print(<span class="string">"FULL dataset tensor:"</span>, dataset.shape)</div><div class="line">    print(<span class="string">"Mean:"</span>, np.mean(dataset))</div><div class="line">    print(<span class="string">"Standard deviation:"</span>, np.std(dataset))</div><div class="line">    <span class="keyword">return</span> dataset</div></pre></td></tr></table></figure>
+<p>然后,将该图像中的数据对象使用pickle函数保存为字节码文件,方便使用.<br>需要注意的是,pickle生成的字节码文件虽然很方便,但是存在安全隐患,熟悉python pickle对象构造原理的黑客,可以在该对象中植入任何的代码,让你的电脑执行,所以我们要使用可信任来源的pickle数据.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maybe_pickle</span><span class="params">(data_folders, min_num_images_per_class, force=False)</span>:</span></div><div class="line">    dataset_names = []</div><div class="line">    <span class="keyword">for</span> folder <span class="keyword">in</span> data_folders:</div><div class="line">        set_filename = folder + <span class="string">'.pickle'</span></div><div class="line">        dataset_names.append(set_filename)</div><div class="line">        <span class="keyword">if</span> os.path.exists(set_filename) <span class="keyword">and</span> <span class="keyword">not</span> force:</div><div class="line">            <span class="comment"># You may override by setting force = True.</span></div><div class="line">            print(<span class="string">"%s already present - Skipping pickling."</span> % set_filename)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            print(<span class="string">"Pickling %s."</span> % set_filename)</div><div class="line">            dataset = load_letter(folder, min_num_images_per_class)</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                <span class="keyword">with</span> open(set_filename, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</div><div class="line">                    pickle.dump(dataset, f, pickle.HIGHEST_PROTOCOL)</div><div class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">                print(<span class="string">"Unable to save data to"</span>, set_filename, <span class="string">':'</span>, e)</div><div class="line">    <span class="keyword">return</span> dataset_names</div><div class="line"></div><div class="line">train_datasets = maybe_pickle( train_folders, <span class="number">45000</span>)</div><div class="line">test_datasets = maybe_pickle( test_folders, <span class="number">1800</span>)</div><div class="line"></div><div class="line">print(train_datasets)</div><div class="line">print(test_datasets)</div></pre></td></tr></table></figure></p>
+<p>这一个过程耗费的时间比较长,我的机械硬盘大概需要40分钟的样子才能完成这一个过程.</p>
+<h2 id="还原几幅字节码文件中内容-确保数据仍旧完好"><a href="#还原几幅字节码文件中内容-确保数据仍旧完好" class="headerlink" title="还原几幅字节码文件中内容,确保数据仍旧完好"></a>还原几幅字节码文件中内容,确保数据仍旧完好</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">display_sample_img</span><span class="params">( datasets, *, sample_size = <span class="number">5</span>, title = None )</span>:</span></div><div class="line">    fig = plt.figure()</div><div class="line">    <span class="keyword">if</span> title <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        fig.suptitle(title, fontsize = <span class="number">16</span>, fontweight = <span class="string">"bold"</span>)</div><div class="line"></div><div class="line">    class_num = len( datasets )</div><div class="line"></div><div class="line">    location = <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> dataset <span class="keyword">in</span> datasets:</div><div class="line">        <span class="keyword">with</span> open( dataset, <span class="string">"rb"</span>) <span class="keyword">as</span> f:</div><div class="line">            sub_dataset = pickle.load(f)</div><div class="line"></div><div class="line">            permutation = np.random.permutation( sample_size )</div><div class="line">            sub_dataset = sub_dataset[permutation]</div><div class="line"></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range( sample_size ):</div><div class="line">                plt.subplot( class_num, sample_size, i+location )</div><div class="line">                plt.imshow( sub_dataset[i] )</div><div class="line">            location += sample_size</div><div class="line"></div><div class="line">    plt.show()</div><div class="line">    <span class="keyword">return</span></div><div class="line"></div><div class="line">display_sample_img(train_datasets, sample_size = <span class="number">10</span> )</div><div class="line">display_sample_img(test_datasets, title = <span class="string">"test dataset samples"</span>)</div></pre></td></tr></table></figure>
+<h2 id="数据重组"><a href="#数据重组" class="headerlink" title="数据重组"></a>数据重组</h2><p>将10个文件夹中的数据合并到一起,并且进行重新洗牌,使每个手写字母数据充分混合,均匀分布</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_arrays</span><span class="params">( nb_rows, img_size)</span>:</span></div><div class="line">    <span class="keyword">if</span> nb_rows:</div><div class="line">        dataset = np.ndarray( (nb_rows, img_size, img_size), dtype = np.float32)</div><div class="line">        labels = np.ndarray( nb_rows, dtype = np.int32)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        dataset, labels = <span class="keyword">None</span>, <span class="keyword">None</span></div><div class="line">    <span class="keyword">return</span> dataset, labels</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_datasets</span><span class="params">( pickle_files, train_size, valid_size=<span class="number">0</span>)</span>:</span></div><div class="line">    num_classes = len(pickle_files)</div><div class="line">    valid_dataset, valid_labels = make_arrays( valid_size, image_size)</div><div class="line">    train_dataset, train_labels = make_arrays( train_size, image_size)</div><div class="line"></div><div class="line">    vsize_per_class = valid_size // num_classes</div><div class="line">    tsize_per_class = train_size // num_classes</div><div class="line"></div><div class="line">    <span class="comment"># start_v == start of vaild dataset</span></div><div class="line">    <span class="comment"># start_t == start of train dataset</span></div><div class="line">    <span class="comment"># start_l == start of label set</span></div><div class="line">    start_v, start_t = <span class="number">0</span>, <span class="number">0</span></div><div class="line">    end_v, end_t = vsize_per_class, tsize_per_class</div><div class="line">    end_l = vsize_per_class + tsize_per_class</div><div class="line">    <span class="keyword">for</span> label, pickle_file <span class="keyword">in</span> enumerate(pickle_files):</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">with</span> open(pickle_file, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</div><div class="line">                letter_set = pickle.load(f)</div><div class="line">                <span class="comment"># let's shuffle the letters to have random validattiong and training set</span></div><div class="line">                <span class="comment"># 打乱数据集的顺序</span></div><div class="line">                np.random.shuffle( letter_set )</div><div class="line">                <span class="keyword">if</span> valid_dataset <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">                    valid_letter = letter_set[:vsize_per_class, :, :]</div><div class="line">                    valid_dataset[start_v : end_v, :, :] = valid_letter</div><div class="line">                    valid_labels[start_v : end_v] = label</div><div class="line">                    start_v += vsize_per_class</div><div class="line">                    end_v += vsize_per_class</div><div class="line"></div><div class="line">                <span class="comment"># 重上面获取的验证集之后的数据来获取训练集</span></div><div class="line">                train_letter = letter_set[vsize_per_class : end_l, :, :]</div><div class="line">                train_dataset[start_t : end_t, :, :] = train_letter</div><div class="line">                train_labels[start_t : end_t] = label</div><div class="line">                start_t += tsize_per_class</div><div class="line">                end_t += tsize_per_class</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(<span class="string">"Unable to process data from"</span>, pickle_file, <span class="string">':'</span>, e)</div><div class="line">            <span class="keyword">raise</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> valid_dataset, valid_labels, train_dataset, train_labels</div><div class="line"></div><div class="line">train_size = <span class="number">200000</span></div><div class="line">valid_size = <span class="number">10000</span></div><div class="line">test_size = <span class="number">10000</span></div><div class="line"></div><div class="line">valid_dataset, valid_labels, train_dataset, train_labels = merge_datasets(</div><div class="line">        train_datasets, train_size, valid_size)</div><div class="line">_, _, test_dataset, test_labels = merge_datasets(test_datasets, test_size)</div><div class="line"></div><div class="line">print(<span class="string">"Training : "</span>, train_dataset.shape, train_labels.shape)</div><div class="line">print(<span class="string">"Validation : "</span>, valid_dataset.shape, valid_labels.shape)</div><div class="line">print(<span class="string">"Testing : "</span>, test_dataset.shape, test_labels.shape)</div></pre></td></tr></table></figure>
+<h2 id="最后的整理"><a href="#最后的整理" class="headerlink" title="最后的整理"></a>最后的整理</h2><p>将数据整理成一个完好的数据,来给接下来的任务进行使用.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">randomize</span><span class="params">( dataset, labels )</span>:</span></div><div class="line">    permutation = np.random.permutation(labels.shape[<span class="number">0</span>])</div><div class="line">    shuffled_dataset = dataset[permutation, :, :]</div><div class="line">    shuffled_labels = labels[permutation]</div><div class="line">    <span class="keyword">return</span> shuffled_dataset, shuffled_labels</div><div class="line"></div><div class="line">train_dataset, train_labels = randomize( train_dataset, train_labels)</div><div class="line">test_dataset, test_labels = randomize( test_dataset, test_labels)</div><div class="line">valid_dataset, valid_labels = randomize( valid_dataset, valid_labels)</div><div class="line"></div><div class="line">picke_file = os.path.join( data_root, <span class="string">"notMNIST.pickle"</span>)</div><div class="line"></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    f = open( picke_file, <span class="string">"wb"</span>)</div><div class="line">    save = &#123;</div><div class="line">            <span class="string">"train_dataset"</span> : train_dataset,</div><div class="line">            <span class="string">"train_labels"</span>  : train_labels,</div><div class="line">            <span class="string">"valid_dataset"</span> : valid_dataset,</div><div class="line">            <span class="string">"valid_labels"</span>  : valid_labels,</div><div class="line">            <span class="string">"test_dataset"</span>  : test_dataset,</div><div class="line">            <span class="string">"test_labels"</span>   : test_labels,</div><div class="line">            &#125;</div><div class="line">    pickle.dump( save, f, pickle.HIGHEST_PROTOCOL)</div><div class="line">    f.close()</div><div class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">    print(<span class="string">"Unable to save data to"</span>, picke_file, <span class="string">':'</span>, e)</div><div class="line">    <span class="keyword">raise</span></div><div class="line"></div><div class="line">statinfo = os.stat(picke_file)</div><div class="line">print(<span class="string">"Compressed picke size: "</span>, statinfo.st_size)</div></pre></td></tr></table></figure></p>
+<h2 id="训练一个简单的神经网络测试结果"><a href="#训练一个简单的神经网络测试结果" class="headerlink" title="训练一个简单的神经网络测试结果"></a>训练一个简单的神经网络测试结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict_accuracy</span><span class="params">( dataset , sample_size )</span>:</span></div><div class="line">    lgrg = LogisticRegression()</div><div class="line">    <span class="keyword">with</span> open(dataset, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</div><div class="line">        dataset = pickle.load(f)</div><div class="line">        X_test = dataset[<span class="string">"test_dataset"</span>].reshape( dataset[<span class="string">"test_dataset"</span>].shape[<span class="number">0</span>], <span class="number">28</span>*<span class="number">28</span>)</div><div class="line">        y_test = dataset[<span class="string">"test_labels"</span>]</div><div class="line"></div><div class="line">        X_train = dataset[<span class="string">"train_dataset"</span>][:sample_size].reshape(sample_size, <span class="number">784</span>)</div><div class="line">        y_train = dataset[<span class="string">"train_labels"</span>][:sample_size]</div><div class="line"></div><div class="line">        lgrg.fit(X_train, y_train)</div><div class="line"></div><div class="line">        print(<span class="string">"\n sample size is "</span>, sample_size, <span class="string">", accuracy is "</span>, lgrg.score(X_test, y_test))</div><div class="line"></div><div class="line">predict_accuracy( picke_file, <span class="number">100</span>)</div><div class="line">predict_accuracy( picke_file, <span class="number">1000</span>)</div><div class="line">predict_accuracy( picke_file, <span class="number">10000</span>)</div><div class="line">predict_accuracy( picke_file, <span class="number">200000</span>)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tutorial/" rel="tag"># tutorial</a>
+          
+            <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+          
+            <a href="/tags/note/" rel="tag"># note</a>
+          
+            <a href="/tags/deep-learning/" rel="tag"># deep-learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/12/Udacity-deep-learning-class-0/" rel="next" title="Lesson 0-- Introduction">
+                <i class="fa fa-chevron-left"></i> Lesson 0-- Introduction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/17/Weekly-repot-2/" rel="prev" title="Weekly repot 2">
+                Weekly repot 2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/hashiqi.jpg"
+               alt="崔志颖" />
+          <p class="site-author-name" itemprop="name">崔志颖</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CuiZhiying" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/108841075356564343375" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装好环境"><span class="nav-number">1.</span> <span class="nav-text">安装好环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从网上下载原始数据"><span class="nav-number">2.</span> <span class="nav-text">从网上下载原始数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压文件"><span class="nav-number">3.</span> <span class="nav-text">解压文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取数据包中的每一个图像"><span class="nav-number">4.</span> <span class="nav-text">读取数据包中的每一个图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#还原几幅字节码文件中内容-确保数据仍旧完好"><span class="nav-number">5.</span> <span class="nav-text">还原几幅字节码文件中内容,确保数据仍旧完好</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据重组"><span class="nav-number">6.</span> <span class="nav-text">数据重组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后的整理"><span class="nav-number">7.</span> <span class="nav-text">最后的整理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练一个简单的神经网络测试结果"><span class="nav-number">8.</span> <span class="nav-text">训练一个简单的神经网络测试结果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">崔志颖</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
